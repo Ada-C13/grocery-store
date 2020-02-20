@@ -14,6 +14,10 @@ class Order
   end
 
   def total
+    sum = products.values.sum
+    tax = sum * 0.075
+    sum += tax
+    return sum.round(2)
   end
 
   def add_product(name, price)
