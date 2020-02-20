@@ -115,6 +115,7 @@ describe "Order Wave 1" do
   describe "#remove_product" do
     it "Decreases the number of products" do
       products = { "banana" => 1.99, "cracker" => 3.00 }
+      order = Order.new(1337, products, customer)
       before_count = products.count
 
       order.remove_product("banana")
@@ -124,6 +125,7 @@ describe "Order Wave 1" do
 
     it "Is removed from the collection of products" do
       products = { "banana" => 1.99, "cracker" => 3.00 }
+      order = Order.new(1337, products, customer)
 
       order.remove_product("banana")
       expect(order.products.include?("banana")).must_equal false
@@ -131,11 +133,12 @@ describe "Order Wave 1" do
 
     it "Raises an ArgumentError if the product is not found" do
       products = { "banana" => 1.99, "cracker" => 3.00 }
+      order = Order.new(1337, products, customer)
 
       before_total = order.total
 
       expect {
-        order.remove_product("banana")
+        order.remove_product("apple")
       }.must_raise ArgumentError
 
       # The list of products should not have been modified

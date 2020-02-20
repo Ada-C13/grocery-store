@@ -13,6 +13,7 @@ class Order
 		@fulfillment_status = fulfillment_status
 	end
 
+	# Totals the prices of the product list.
 	def total
 		total = 0.0
 		if @products.length == 0
@@ -25,11 +26,21 @@ class Order
 		end
 	end
 
+	# Adds a product to the list.
 	def add_product(product, price)
 		if @products.keys.include?(product)
 			raise ArgumentError.new("Product is already included.")
 		else
 			@products[product] = price
+		end
+	end
+
+	# Removes a product from the list.
+	def remove_product(product)
+		if @products.keys.include?(product) == false
+			raise ArgumentError.new("Product was not found in list.")
+		else
+			@products.delete(product)
 		end
 	end
 end
