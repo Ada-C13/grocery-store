@@ -1,7 +1,7 @@
 class Order
 
 	attr_reader :id
-	attr_accessor :fulfillment_status
+	attr_accessor :products, :customer, :fulfillment_status
 
 	def initialize(id, products, customer, fulfillment_status = :pending)
 		if [:pending, :paid, :processing, :shipped, :complete].include?(fulfillment_status) != true
@@ -12,5 +12,17 @@ class Order
 		@customer = customer
 		@fulfillment_status = fulfillment_status
 	end
-	
+
+	def total
+		total = 0.0
+		if @products.length == 0
+			return total
+		else
+			@products.values.each do |price|
+				total += price
+			end
+			return (total * 1.075).round(2)
+		end
+	end
+
 end
