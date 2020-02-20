@@ -25,11 +25,11 @@ class Order
     @name = name # this is a key
     @price = price # this is that key's value
     
-    if @products.include?(@products[:name])
-      raise(ArgumentError, "That product is already included in this order!")
-    else
-    @products[:name] = price
+    if @products.keys.include? name
+      raise(ArgumentError, "This product is already included in this order!")
+    else @products[name] = price
     end
+
   end
 
 end
@@ -44,3 +44,10 @@ end
     # total *= 1.075
 
     # return total.round(2)
+
+# non-functional add_product method
+# if @products.include?(@products[:name])
+#   raise(ArgumentError, "That product is already included in this order!")
+# else
+# @products[:name] = price
+# end
