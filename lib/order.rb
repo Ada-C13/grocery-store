@@ -27,4 +27,11 @@ class Order
     @products[name] = price
   end
 
+  def remove_product(name)
+    if !(@products.keys.include? name)
+      raise ArgumentError.new("That product is not in the order.")
+    end
+    @products.delete(name)
+  end
+
 end
