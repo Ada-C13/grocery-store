@@ -18,4 +18,15 @@ class Order
     raise ArgumentError.new("Invalid status given (#{status})")
   end
 
+  def total 
+    total = products.sum { |product, price| price }
+    total *= 1.075
+    total.round(2)
+  end
+
+  def add_product(name, price)
+    raise ArgumentError.new("That product already exists.") if products.include? name
+    products[name] = price
+  end
+
 end
