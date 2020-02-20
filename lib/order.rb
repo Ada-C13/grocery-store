@@ -1,21 +1,21 @@
 class Order
   attr_reader :id
-  attr_accessor :products_collection
+  attr_accessor :products, :customer, :fulfillment_status
 
-  def initialize(id, products_collection, customer, fulfillment_status = :pending)
+  def initialize(id, products, customer, fulfillment_status = :pending)
     @id = id
-    @products_collection = products_collection
+    @products = products
     @customer = customer
-    statuses = [:pending, :paid, :shipped, :complete]
-    if !statuses.include? fulfillment_status
-      raise ArgumentError.new
+    valid_statuses = [:pending, :paid, :processing, :shipped, :complete]
+    if !valid_statuses.include? fulfillment_status
+      raise ArgumentError.new("Invalid status")
     end
     @fulfillment_status = fulfillment_status
   end
 
   def total()
     sum = 0
-    @products_collection.each do |product, cost|
+    @products.each do |product, cost|
       sum += cost
     end
 
@@ -25,11 +25,11 @@ class Order
   end
 
   def add_product(product_name, price)
-    if @products_collection.has_key?(product_name)
+    if @products.has_key?(product_name)
       raise ArgumentError.new("This product is already in the collection.")
     end
 
-    @products_collection[product_name] = price
+    @products[product_name] = price
   end
 end
 
