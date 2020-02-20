@@ -24,6 +24,11 @@ class Order
     products[name] = price
   end
 
+  def remove_product(name)
+    raise ArgumentError if !products.key?(name)
+    products.delete(name)
+  end
+
 end
 
 
