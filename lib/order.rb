@@ -13,7 +13,7 @@ class Order
   def validate_status(status)
     status_markers = %i[pending paid processing shipped complete]
     if status_markers.include? status
-      return status.to_sym
+      return status
     end
     raise ArgumentError.new("Invalid status given (#{status})")
   end
@@ -25,8 +25,14 @@ class Order
   end
 
   def add_product(name, price)
-    raise ArgumentError.new("That product already exists.") if products.include? name
+    raise ArgumentError.new("Product #{name} already exists.") if products.include? name
     products[name] = price
   end
+
+  def remove_product(name)
+    raise ArgumentError.new("Product #{name} does not exist.") unless products.include? name
+    products.delete(name)
+  end
+
 
 end
