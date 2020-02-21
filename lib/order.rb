@@ -17,14 +17,26 @@ class Order
   end 
 
   def total
+
     summed_total = 0
-    
     @products.each {|product, price| summed_total += price}
 
     return post_tax_price = (summed_total*1.075).round(2) 
+  end
+
+  def add_product(product_name,price)
+    while @products.include?(product_name)
+      raise ArgumentError, 'You must provide a new product!'
+    end
+    
+    @products[product_name] = price
   
   end
+
+
+
 end
+
 
 
 
