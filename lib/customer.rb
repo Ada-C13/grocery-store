@@ -1,6 +1,5 @@
 require 'csv'
 
-
 class Customer 
   attr_reader :id
   attr_accessor :email, :address 
@@ -24,10 +23,9 @@ class Customer
     return all_customers
   end
 
-
   def self.find(id)
     all_customers = self.all
-    results = all_customers.find { |customer| customer.id == id }
+    all_customers.find { |customer| customer.id == id }
   end
 
 end 
