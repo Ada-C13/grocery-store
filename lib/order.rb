@@ -1,42 +1,42 @@
+# frozen_string_literal: true
+
 require_relative 'customer.rb'
 require 'csv'
 
 class Order
   attr_reader :id
-  attr_accessor :products,:customer,:fulfillment_status
+  attr_accessor :products, :customer, :fulfillment_status
 
-  VALID_STATUS = %i[pending paid processing shipped complete]
+  VALID_STATUS = %i[pending paid processing shipped complete].freeze
 
-  def initialize(id,products,customer,fulfillment_status = :pending)
-    @id = id 
+  def initialize(id, products, customer, fulfillment_status = :pending)
+    @id = id
     @products = products
     @customer = customer
 
-    if VALID_STATUS.include?(fulfillment_status)
-      @fulfillment_status = fulfillment_status
-    else
-      raise ArgumentError.new('Invaild Status')
-    end 
+    raise ArgumentError unless VALID_STATUS.include?(fulfillment_status)
+
+    @fulfillment_status = fulfillment_status
   end
 
   def total
-    sum = 0 
-    @products.each do |product_name,product_price|
-      sum += product_price 
+    sum = 0
+    @products.each do |_product_name, product_price|
+      sum += product_price
     end
     sum = (sum + (sum * 0.075).round(2))
-    return sum
+    sum
   end
-  
-  def add_product(product_name,product_price)
-    if products.has_key?product_name
+
+  def add_product(product_name, product_price)
+    if products.key? product_name
       raise ArgumentError
     else @products[product_name] =
-     product_price 
-      return true
+           product_price
+         true
     end
   end
-  
+
   # def self.fufillment_status
   #   if VALID_STATUS.include?(fulfillment_status)
   #     @fulfillment_status = fulfillment_status
@@ -44,6 +44,5 @@ class Order
   #   else
   #     raise ArgumentError.new('Invaild Status')
   #   end
-  # end 
+  # end
 end
-  

@@ -1,7 +1,6 @@
 require 'csv'
 require 'faker'
 
-
 # Students do not need to modify this file
 # This is the file created by instructors to create all CSV files
 
