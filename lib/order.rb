@@ -88,7 +88,7 @@ class Order
       end
     end
     
-    return all_order_from_customer 
+    return all_order_from_customer unless all_order_from_customer.empty?
   end
 end
 

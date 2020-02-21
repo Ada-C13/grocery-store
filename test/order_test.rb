@@ -204,4 +204,22 @@ describe "Order Wave 2" do
       expect(Order.find(53145)).must_be_nil
     end
   end
+
+  describe "Order.find_by_customer" do
+    it "Returns an array of orders from that customer" do
+      id = 25
+
+      expect(Order.find_by_customer(id)).must_be_kind_of Array
+    end
+
+    it "Can return all the the orders from that customer" do
+      id = 25
+
+      expect(Order.find_by_customer(id).length).must_equal 6
+    end
+
+    it "Returns nil for an customer id that doesn't exist" do
+      expect(Order.find_by_customer(53145)).must_be_nil
+    end
+  end
 end
