@@ -20,4 +20,13 @@ class Order
 		raise ArgumentError.new("A product with this name has already been added to the order!") if @products.key?(name)
 		@products.store(name, price)
 	end
+
+	def total
+		if @products == {}
+			return 0
+		else
+			sum = @products.values.reduce(:+)
+			return (sum * 1.075).round(2)
+		end
+	end
 end
