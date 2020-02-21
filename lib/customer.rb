@@ -25,14 +25,22 @@ class Customer
       all_customers << new_customer
       
     end
-
+    
     return all_customers
   end
   
   def self.find(id)
     all_customers = self.all
+    
     found_customer_array = all_customers.select { |customer| customer.id == id }
-    found_customer = found_customer_array[0]
+    
+    if found_customer_array.empty?
+      return nil
+    else
+      found_customer = found_customer_array[0]
+    end
+    
+    return found_customer
   end
   
-end
+end # end customer class

@@ -1,4 +1,5 @@
 require 'csv'
+require 'awesome_print'
 
 class Order
   attr_reader :id
@@ -34,3 +35,25 @@ class Order
 
 end
 
+# return this as a hash to pass as a parameter
+def parse_products
+orders = CSV.read('./data/orders.csv')
+
+products = {}
+
+orders.each do |order|
+  split_food_price = ""
+
+  squished_food_price = order[1].split(';')
+    
+    squished_food_price.each do |item_with_price|
+      split_food_price = item_with_price.split(':')
+      name = split_food_price[0]
+      price = split_food_price[1].to_f
+      products[name] = price
+    end
+
+  end
+
+  return products
+end
