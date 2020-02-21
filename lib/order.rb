@@ -1,5 +1,9 @@
 #!/usr/bin/ruby
 # 
+# Title  : Order - Ada Cohort 13 - Space
+# Author : Suely Barreto
+# Date   : February 2020
+# 
 
 class Order
 
@@ -17,7 +21,6 @@ class Order
     unless valid.include?(@fulfillment_status)
       raise ArgumentError, "Invalid Status"
     end
-
   end
 
   def total
