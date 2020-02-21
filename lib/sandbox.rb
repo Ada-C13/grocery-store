@@ -1,3 +1,5 @@
+require 'csv'
+
 class Order
   attr_reader :id
   attr_accessor :products, :customer, :fulfillment_status
@@ -32,20 +34,3 @@ class Order
 
 end
 
-# wordier version of def total
-    # total = 0
-
-    # @products.each do |product, price|
-    #   total += price
-    # end
-
-    # total *= 1.075
-
-    # return total.round(2)
-
-# non-functional add_product method
-# if @products.include?(@products[:name])
-#   raise(ArgumentError, "That product is already included in this order!")
-# else
-# @products[:name] = price
-# end
