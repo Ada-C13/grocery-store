@@ -252,7 +252,20 @@ describe "Order Wave 2" do
 
   describe "Order.find_by_customer" do
   # returns a list of Order instances where the value of the customer's ID matches the passed parameter.
-    
+    it "must return an array" do
+      order_matches = Order.find_by_customer(2)
 
+      expect(order_matches).must_be_kind_of Array
+    end
+
+    it "must return a list of expected length for ID" do
+      order_matches = Order.find_by_customer(25)
+      expect(order_matches.length).must_be_equal_to 6
+    end
+
+    it "must return an empty array for an ID with no matches" do
+      order_matches = Order.find_by_customer(1000)
+      expect(order_matches.length).must_be_equal_to 0
+    end
   end
 end

@@ -47,6 +47,11 @@ class Order
 		return nil
 	end
 
+	# Returns all orders belonging to a customer ID.
+	def self.find_by_customer(customer_id)
+
+	end
+
 	# Totals the prices of the product list.
 	def total
 		total = 0.0
