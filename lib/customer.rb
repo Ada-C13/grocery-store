@@ -1,5 +1,6 @@
 require 'csv'
 require 'awesome_print'
+require_relative './order'
 
 class Customer
   attr_reader :id
@@ -35,5 +36,3 @@ class Customer
     return nil
   end
 end
-
-Customer.find(2)
