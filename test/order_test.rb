@@ -111,6 +111,25 @@ describe "Order Wave 1" do
       expect(order.total).must_equal before_total
     end
   end
+
+  describe "#remove_product" do
+    it "can remove a product within an order" do
+      products = { "banana" => 1.99, "cracker" => 3.00 }
+      order = Order.new(1234, products, customer)
+
+      order.remove_product("banana")
+      expect(order.products.include?("banana")).must_equal false
+    end
+
+    it "raises ArgumentError if the product wanted to remove is not in the order" do
+      products = { "banana" => 1.99, "cracker" => 3.00 }
+      order = Order.new(5678, products, customer)
+
+      expect{
+        order.remove_product("icecream")
+      }.must_raise ArgumentError
+    end
+  end
 end
 
 # TODO: change 'xdescribe' to 'describe' to run these tests
@@ -187,6 +206,19 @@ describe "Order Wave 2" do
 
     it "Returns nil for an order that doesn't exist" do
       expect(Order.find(9999999999)).must_be_nil
+    end
+  end
+
+  describe "Order.find_by_customer(customer_id)" do
+    it "Returns an array of order instances" do
+      customer_orders = Order.find_by_customer(25)
+      expect(customer_orders).must_be_instance_of Array
+      customer_orders.each do |order|
+        expect(order).must_be_instance_of Order
+      end
+    end
+    it "Returns empty array if the customer id is not found" do
+      expect(Order.find_by_customer(9999999999)).must_equal []
     end
   end
 end
