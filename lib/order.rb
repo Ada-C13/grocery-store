@@ -3,6 +3,8 @@ require_relative 'customer'
 class Order
 	attr_reader :id
 	attr_accessor :products, :customer, :fulfillment_status
+	@@order_info = CSV.open("data/orders.csv")
+	@@all = []
 
 	def initialize(id, products, customer, fulfillment_status = :pending)
 		@id = id
@@ -43,4 +45,23 @@ class Order
 			raise ArgumentError, "Product already does not exist"
 		end
 	end
+
+	def self.all
+		@@order_info.select do |row|
+			row.map!(&:strip)
+			product_list = {}
+			row[1].split(";").each do |array|
+				mod_array = array.split(":")
+				product_list[mod_array[0]] = mod_array[1].to_f
+			end
+		
+			@@all << Order.new(row[0].to_i, product_list, Customer.find(row[2].to_i),row[3].to_sym)
+		end
+		return @@all
+	end
+
+	def self.find(find_id)
+		Order.all.find {|order| order.id == find_id}
+	end
+
 end
