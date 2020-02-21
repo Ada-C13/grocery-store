@@ -1,3 +1,6 @@
+require 'csv'
+require_relative 'customer.rb'
+
 class Order
 
 	attr_reader :id
@@ -11,6 +14,37 @@ class Order
 		@products = products
 		@customer = customer
 		@fulfillment_status = fulfillment_status
+	end
+
+	# Finds all orders.
+	def self.all
+		all_orders = []
+
+		CSV.read('data/orders.csv').each do |line|
+			customer_products = {}
+			
+			line[1].split(';').each do |product|
+				customer_products[product.split(':')[0]] = product.split(':')[1].to_f
+			end
+
+			new_order = self.new(line[0].to_i, customer_products, Customer.find(line[2].to_i), line[3].to_sym)
+			all_orders << new_order
+		end
+
+		return all_orders
+	end
+
+	# Locates a specific order.
+	def self.find(id)
+		all_orders = self.all
+
+		all_orders.each do |order|
+			if id == order.id
+				return order
+			end
+		end
+
+		return nil
 	end
 
 	# Totals the prices of the product list.
