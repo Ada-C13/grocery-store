@@ -11,4 +11,17 @@ class Customer
     @address = address
   end
 
+  # Create Customer
+  
+
+
+
+
+
+
+
+
+
+
 end
+

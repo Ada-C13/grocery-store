@@ -2,7 +2,7 @@
 class Order
   attr_reader :id
   attr_accessor :products, :customer, :fulfillment_status
-  def initialize(id,products, customer,fulfillment_status = :pending)
+  def initialize(id, products, customer, fulfillment_status = :pending)
     @id = id
     @products = products
     @customer = customer
@@ -22,4 +22,19 @@ class Order
    total = (sum_costs + sum_costs * 0.075).round(2)
    return total
   end
+
+
+# Create add_product method 
+  def add_product(product_name, price)
+    # get all the names of product from products hash
+    raise ArgumentError if products.key?(product_name)
+    @products[product_name] = price
+    return @products
+  end
 end
+
+
+
+
+
+  
