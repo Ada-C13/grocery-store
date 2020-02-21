@@ -22,6 +22,16 @@ class Customer
     return customers
   end
 
+  def self.find(id)
+    Customer.all.each do |customer|
+      if customer.id == id
+        return customer
+      end
+    end
+      return nil
+  end
+  
+
   # customers = Customer.all
   # print customers
 
