@@ -225,4 +225,12 @@ describe "Order Wave 2" do
       expect(bogus_order).must_equal nil
     end
   end
+
+  describe "Order.find_by_customer" do
+    it "Can find all orders placed by one customer" do
+      all_customer_orders = Order.find_by_customer(25)
+      expect(all_customer_orders).must_be_kind_of Array
+      expect(all_customer_orders.length).must_equal 6
+    end
+  end
 end
