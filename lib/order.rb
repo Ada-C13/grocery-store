@@ -28,4 +28,33 @@ class Order
         end
         products[product_name] = product_price
     end
+
+    def self.all
+        # returns a collection of Order instances, representing all of the Orders described in the CSV file
+        all_orders = []
+        CSV.read("data/orders.csv").each do |order_details|
+            # create hash of products with prices from order. # This would be a great piece of logic to put into a helper method
+            orders_hash = {}
+            orders = order_details[1].split(";")
+            orders.each do |product|
+                product_details = product.split(":")
+                orders_hash[product_details[0]] = product_details[1].to_f
+            end
+
+            # create order with ID, orders hash, customer, fulfillment status
+            order_data = Order.new(order_details[0].to_i, orders_hash, Customer.find(order_details[2].to_i), order_details[3].to_sym)
+            all_orders << order_data
+        end
+        return all_orders
+    end
+
+    def self.find(id)
+        # returns an instance of Order where the value of the id field in the CSV matches the passed parameter
+        self.all.each do |order|
+            if order.id == id
+                return order
+            end
+        end
+        return nil
+    end
 end
