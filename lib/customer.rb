@@ -23,7 +23,17 @@ class Customer
   #return customers
 
   def self.find(id)
-    
+    found_customer = nil
+    customers = Customer.all
+    customers.each do |customer|
+      if customer.id == id
+        found_customer = customer
+        break
+      else 
+        found_customer = nil
+      end
+      return found_customer
+    end
   end
 end
 
