@@ -7,11 +7,6 @@ class Customer
   def initialize(id,email,address)
   @id = id 
   @email = email
-  @address = {
-  street: "",
-  city: "",
-  state: "",
-  zip: "",
-    }
+  @address = address
   end 
 end

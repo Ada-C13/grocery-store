@@ -1,19 +1,25 @@
 require_relative 'order.rb'
 
 class Order
-    attr_reader :id
+    attr_reader :id, :products,
 
-def initialize(id)
+def initialize(id,products,customer,fufillment_status = pending)
     @id = id 
+    @products = products
+    @customer = customer
+    @fufillment_status = fufillment_status
 end 
 
 def total
-# Summing up the products
-# Adding a 7.5% tax
-# Rounding the result to two decimal places
+price * .075%
+Rounding the result to two decimal places
 end
 
-def fufillment_status(pending:, paid:, processing:, shipped:, complete:)
+def add_product(products_name,price)
+    products = {}
+    
+end
+def fufillment_status
     raise ArgumentError if fufillment_status 
 end 
 end
