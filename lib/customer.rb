@@ -10,6 +10,8 @@ class Customer
     @address = address
   end
 
+  customer_csv = CSV.parse(File.read(__dir__ + "/../data/customers.csv"), headers: true)
+
   def self.all
     # returns a collection of Customer instances, representing all of the Customer described in the CSV
   end

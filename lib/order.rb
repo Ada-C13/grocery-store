@@ -1,3 +1,6 @@
+require "csv"
+require_relative "customer"
+
 class Order
   attr_reader :id
   attr_accessor :products, :customer, :fulfillment_status
@@ -50,6 +53,8 @@ class Order
     raise ArgumentError.new("That product already exists.") if @products.key?(name)
     @products[name] = price
   end
+
+  order_csv = CSV.parse(File.read(__dir__ + "/../data/orders.csv"), headers: true)
 end
 
 # ! Optional
