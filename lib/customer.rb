@@ -30,7 +30,7 @@ class Customer
     return customer_instances
   end 
 
-  
+
   def self.find(id)
     customer_instances = self.all
     
@@ -40,5 +40,19 @@ class Customer
 
     # Return an instance of Customer
     return found_customer_instance
+  end 
+
+
+  # Wave 3 - Optional
+  def self.save(filename, new_customer)
+    CSV.open(filename, 'a') do |csv|
+      id = new_customer.id 
+      email = new_customer.email 
+      address = new_customer.address.values
+
+      new_customer_data = [id, email, *address]
+      csv << new_customer_data   
+    end
+    return true
   end 
 end 

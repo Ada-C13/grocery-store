@@ -3,6 +3,7 @@ require 'minitest/reporters'
 require 'minitest/skip_dsl'
 
 require_relative '../lib/customer'
+require 'csv'
 
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
@@ -91,3 +92,28 @@ describe "Customer Wave 2" do
     end
   end
 end
+
+
+# Added (optional for wave 3)
+describe "Customer Wave 3 (optional)" do 
+  describe "Customer.save" do 
+    it "Can save new customer information in the CSV" do 
+      # Arrange 
+      address = {
+        :street => "1299 Westlake Ave",
+        :city => "Seattle",
+        :state => "WA",
+        :zip => "98111"
+      }
+
+      new_customer = Customer.new(9898, "hannah@ada.org", address)
+      
+      # Act & Assert
+      Customer.save('data/customers.csv', new_customer)
+
+      expect(
+        CSV.read('data/customers.csv').last
+      ).must_equal ["9898", "hannah@ada.org", *address.values]
+    end 
+  end 
+end 
