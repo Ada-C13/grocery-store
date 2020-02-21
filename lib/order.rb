@@ -18,16 +18,16 @@ class Order
 
 	# Finds all orders.
 	def self.all
-		all_orders = []
+		all_orders = [] # Variable holding all orders.
 
 		CSV.read('data/orders.csv').each do |line|
-			customer_products = {}
+			order_products = {} # Variable holding all products in an order.
 			
 			line[1].split(';').each do |product|
-				customer_products[product.split(':')[0]] = product.split(':')[1].to_f
+				order_products[product.split(':')[0]] = product.split(':')[1].to_f
 			end
 
-			new_order = self.new(line[0].to_i, customer_products, Customer.find(line[2].to_i), line[3].to_sym)
+			new_order = self.new(line[0].to_i, order_products, Customer.find(line[2].to_i), line[3].to_sym)
 			all_orders << new_order
 		end
 
@@ -36,7 +36,7 @@ class Order
 
 	# Locates a specific order.
 	def self.find(id)
-		all_orders = self.all
+		all_orders = self.all # Variable holding all orders available.
 
 		all_orders.each do |order|
 			if id == order.id
@@ -49,8 +49,8 @@ class Order
 
 	# Returns all orders belonging to a customer ID.
 	def self.find_by_customer(customer_id)
-		all_orders = self.all
-		matched_orders = []
+		all_orders = self.all # Variable holding all orders available.
+		matched_orders = [] # Variable holding all orders matching customer ID.
 
 		all_orders.each do |order|
 			if order.customer.id == customer_id
@@ -63,7 +63,7 @@ class Order
 
 	# Totals the prices of the product list.
 	def total
-		total = 0.0
+		total = 0.0 # Tracks total price.
 		if @products.length == 0
 			return total
 		else
@@ -91,4 +91,5 @@ class Order
 			@products.delete(product)
 		end
 	end
+
 end
