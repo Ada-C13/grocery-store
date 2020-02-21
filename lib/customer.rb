@@ -4,8 +4,6 @@ require 'csv'
 class Customer
 	attr_reader :id
 	attr_accessor :email, :address
-	@@customer_info = CSV.open("data/customers.csv")
-	@@all = []
 
 	def initialize(id, email, address)
 		@id = id
@@ -14,11 +12,12 @@ class Customer
 	end
 
 	def self.all
-		@@customer_info.select do |row|
+		customer_all = []
+		CSV.open("data/customers.csv").select do |row|
 			row.map!(&:strip)
-			@@all << Customer.new(row[0].to_i, row[1], {street: row[2], city: row[3], state: row[4], zip: row[5]})
+			customer_all << Customer.new(row[0].to_i, row[1], {street: row[2], city: row[3], state: row[4], zip: row[5]})
 		end
-		return @@all
+		return customer_all
 	end
 
 	def self.find(find_id)
