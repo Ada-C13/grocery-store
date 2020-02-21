@@ -260,12 +260,12 @@ describe "Order Wave 2" do
 
     it "must return a list of expected length for ID" do
       order_matches = Order.find_by_customer(25)
-      expect(order_matches.length).must_be_equal_to 6
+      expect(order_matches.length).must_equal 6
     end
 
     it "must return an empty array for an ID with no matches" do
       order_matches = Order.find_by_customer(1000)
-      expect(order_matches.length).must_be_equal_to 0
+      expect(order_matches.length).must_equal 0
     end
   end
 end

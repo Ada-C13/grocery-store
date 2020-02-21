@@ -49,7 +49,16 @@ class Order
 
 	# Returns all orders belonging to a customer ID.
 	def self.find_by_customer(customer_id)
+		all_orders = self.all
+		matched_orders = []
 
+		all_orders.each do |order|
+			if order.customer.id == customer_id
+				matched_orders << order
+			end
+		end
+
+		return matched_orders
 	end
 
 	# Totals the prices of the product list.
