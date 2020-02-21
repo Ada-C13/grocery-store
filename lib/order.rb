@@ -1,42 +1,49 @@
-require_relative 'order.rb'
+require_relative 'customer.rb'
 require 'csv'
-require 'awesome_print'
 
 class Order
-    attr_reader :id
-    attr_accessor :products,:customer,:fulfillment_status
+  attr_reader :id
+  attr_accessor :products,:customer,:fulfillment_status
 
+  VALID_STATUS = %i[pending paid processing shipped complete]
 
-
-def initialize(id,products,customer,fulfillment_status = :pending)
+  def initialize(id,products,customer,fulfillment_status = :pending)
     @id = id 
     @products = products
     @customer = customer
-    @fulfillment_status = fulfillment_status
-end 
 
-def total
-  sum = 0 
-  @products.each do |product_name,product_price|
-  sum += product_price 
+    if VALID_STATUS.include?(fulfillment_status)
+      @fulfillment_status = fulfillment_status
+    else
+      raise ArgumentError.new('Invaild Status')
+    end 
   end
-  sum = (sum + (sum * 0.075).round(2))
-  return sum
-end
 
-def add_product(product_name,product_price)
-  if products.has_key?product_name
-  return raise ArgumentError
-  else @products[product_name] =
-   product_price 
-  return true
+  def total
+    sum = 0 
+    @products.each do |product_name,product_price|
+      sum += product_price 
+    end
+    sum = (sum + (sum * 0.075).round(2))
+    return sum
   end
+  
+  def add_product(product_name,product_price)
+    if products.has_key?product_name
+      raise ArgumentError
+    else @products[product_name] =
+     product_price 
+      return true
+    end
+  end
+  
+  # def self.fufillment_status
+  #   if VALID_STATUS.include?(fulfillment_status)
+  #     @fulfillment_status = fulfillment_status
+  #     return false
+  #   else
+  #     raise ArgumentError.new('Invaild Status')
+  #   end
+  # end 
 end
-
-def fufillment_status(fulfillment_status)
-    status = [:pending, :paid, :processing, :shipped, :complete]
-    if status.include?fulfillment_status == false
-    return raise ArgumentError
-  end 
-end
-end
+  

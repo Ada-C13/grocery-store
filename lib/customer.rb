@@ -11,4 +11,12 @@ class Customer
   @email = email
   @address = address
   end 
+
+
+def self.all
+    customers.csv = CSV.read(data/customers.csv)
+end
+
+def self.find(id)
+end
 end
