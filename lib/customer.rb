@@ -12,6 +12,11 @@ class Customer
       
     end
 
+    def set_customer_id(customer_id)
+      @id = customer_id
+    end 
+
+
     def self.all
       dictionary_path = File.join(File.dirname(__FILE__),"../data/customers.csv")
       data = CSV.read(dictionary_path) 

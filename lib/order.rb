@@ -1,3 +1,5 @@
+require 'csv'
+
 
 class Order
   attr_reader :id
@@ -7,11 +9,14 @@ class Order
     @id = id
     @products = products
     @customer = customer
+    
+
     @fulfillment_status = fulfillment_status
     unless [:pending,:paid,:processing,:shipped,:complete].include?(@fulfillment_status)
       raise ArgumentError,'#{fulfillment_status} is not a valid input'
     end 
   end
+
 
   def total
     total_sum = @products.values.sum
@@ -31,6 +36,23 @@ class Order
       raise ArgumentError, '#{name} is not in the product list'
     end 
     @products = @products.reject {|key,value| key == name}
+  end 
+
+  def self.all
+    dictionary_path = File.join(File.dirname(__FILE__),"../data/orders.csv")
+    data = CSV.read(dictionary_path) 
+    list = []
+    data.each do |line|
+      products = line[1].split(";")
+      products_split = products.map {|array|array.split(":")}
+      product_hash = {}
+      products_split.each do |array| 
+        product_hash[array[0]] = array[1].to_f
+      end 
+    
+      list << Order.new(line[0].to_i,product_hash,Customer.find(line[2].to_i),line[3].to_sym)
+    end 
+    return list
   end 
 
 end
