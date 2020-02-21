@@ -7,7 +7,7 @@ require_relative '../lib/order'
 
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
-describe "Order Wave 1" do
+xdescribe "Order Wave 1" do
   let(:customer) do
     address = {
       street: "123 Main",
@@ -111,6 +111,27 @@ describe "Order Wave 1" do
       expect(order.total).must_equal before_total
     end
   end
+
+  describe "#remove_product" do 
+    it "Raises an ArgumentError if no product was found" do 
+      products = { "banana" => 1.99, "cracker" => 3.00 }
+
+      order = Order.new(2222,products,customer)
+
+      expect {
+        order.remove_product("pizza")
+      }.must_raise ArgumentError
+    end 
+
+    it "is deleted from product list" do 
+      products = {"banana" => 1.99, "cracker" => 3.00}
+      order = Order.new(123,products,customer)
+      order.remove_product("banana")
+
+      expect(order.products.key?("banana")).must_equal false
+    end 
+  end 
+
 end
 
 # TODO: change 'xdescribe' to 'describe' to run these tests
