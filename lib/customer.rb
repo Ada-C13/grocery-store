@@ -24,6 +24,19 @@ class Customer
 	def self.find(find_id)
 		Customer.all.find {|customer| customer.id == find_id}
 	end
+
+	# Writes new customer's information into CSV file
+	def self.save(filename, new_customer)
+		CSV.open(filename, "a+") do |csv|
+			address_array = []
+			new_customer.address.each do |k, v|
+				address_array << v
+			end
+			csv << [new_customer.id, new_customer.email] + address_array
+		end
+		return true
+	end
+
 end
 
 
