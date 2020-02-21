@@ -15,4 +15,9 @@ class Order
 	def fulfillment_status
 		return @fulfillment_status
 	end
+
+	def add_product(name, price)
+		raise ArgumentError.new("A product with this name has already been added to the order!") if @products.key?(name)
+		@products.store(name, price)
+	end
 end
