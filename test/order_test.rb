@@ -1,6 +1,7 @@
 require 'minitest/autorun'
 require 'minitest/reporters'
 require 'minitest/skip_dsl'
+require 'pry'
 
 require_relative '../lib/customer'
 require_relative '../lib/order'
@@ -22,8 +23,9 @@ describe "Order Wave 1" do
     it "Takes an ID, collection of products, customer, and fulfillment_status" do
       id = 1337
       fulfillment_status = :shipped
+    
       order = Order.new(id, {}, customer, fulfillment_status)
-
+      
       expect(order).must_respond_to :id
       expect(order.id).must_equal id
 
@@ -61,7 +63,7 @@ describe "Order Wave 1" do
     end
   end
 
-  describe "#total" do
+ describe "#total" do
     it "Returns the total from the collection of products" do
       products = { "banana" => 1.99, "cracker" => 3.00 }
       order = Order.new(1337, products, customer)
@@ -111,6 +113,39 @@ describe "Order Wave 1" do
       expect(order.total).must_equal before_total
     end
   end
+# remove
+describe '#remove_product' do
+  it "decreases the number of products" do
+    products = { "banana" => 1.99, "cracker" => 3.00 }
+    before_count = products.count
+    order = Order.new(1337, products, customer)
+
+    result = order.remove_product("banana")
+    expected_count = before_count - 1
+    expect(result.count).must_equal expected_count
+  end
+
+  it "Is removed from the collection of products" do
+    products = { "banana" => 1.99, "cracker" => 3.00 }
+    order = Order.new(1337, products, customer)
+
+    shopping_bag = order.remove_product("banana")
+    expect(order.products.include?("banana")).must_equal false
+  end
+
+  it "Raises an ArgumentError if the product does not already exist" do
+    products = { "banana" => 1.99, "cracker" => 3.00 }
+
+    order = Order.new(1337, products, customer)
+    before_total = order.total
+
+    expect {
+      order.remove_product("pineapple")
+    }.must_raise ArgumentError
+
+    expect(order.total).must_equal before_total
+  end
+end
 end
 
 # TODO: change 'xdescribe' to 'describe' to run these tests
@@ -145,7 +180,7 @@ xdescribe "Order Wave 2" do
     end
   end
 
-  describe "Order.find" do
+  xdescribe "Order.find" do
     it "Can find the first order from the CSV" do
       # TODO: Your test code here!
     end
