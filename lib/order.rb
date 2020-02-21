@@ -22,11 +22,7 @@ class Order
 	end
 
 	def total
-		if @products == {}
-			return 0
-		else
-			sum = @products.values.reduce(:+)
-			return (sum * 1.075).round(2)
-		end
+		sum = @products.values.reduce(:+)
+		return @products == {} ? 0 : (sum * 1.075).round(2)
 	end
 end
