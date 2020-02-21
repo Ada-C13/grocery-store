@@ -16,7 +16,7 @@ class Order
       return 0
     else
       total = @products.values.reduce(:+)
-      total = total + (total * 0.075)
+      total = total * 1.075
 
       return ('%.2f' % total).to_f
     end
