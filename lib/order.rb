@@ -34,5 +34,30 @@ class Order
     products.delete(name)
   end
 
+  def self.format_products(products)
+    products_in_order = {}
+    products_array = products.split(";")
+    products_array.each do |product|
+      item = product.split(":")
+      products_in_order[item[0]] = item[1].to_f.round(2)
+    end
+    return products_in_order
+  end
+
+  def self.all 
+    all_orders = []
+
+    CSV.read('./data/orders.csv').each do |line|
+      products = format_products(line[1])
+      all_orders << Order.new(line[0].to_i,products,Customer.new(line[2].to_i,"email","address"),line[3].to_sym)
+    end
+    return all_orders
+  end
+
+
+
+  def self.find(id)
+  end
+
 
 end
