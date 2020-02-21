@@ -1,6 +1,7 @@
-#Wave 1
-# Create a class called Customer
-
+# #Wave 1
+# # Create a class called Customer
+require 'awesome_print'
+require 'csv'
 class Customer
   attr_reader :id 
   attr_accessor :email, :address
@@ -11,8 +12,28 @@ class Customer
     @address = address
   end
 
-  # Create Customer
+  # Create Customer self.all
+
+  def self.all
+    customers = []
+    CSV.read('./data/customers.csv').each do |customer|
+      customers << (Customer.new(customer[0].to_i, customer[1], {:street =>customer[2],:city => customer[3],:state=> customer[4],:zip => customer[5]}))
+    end
+    return customers
+  end
+
+  # customers = Customer.all
+  # print customers
+
+  # customers = []
+  # CSV.read('../data/customers.csv').each do |customer|
+  #   customers << (Customer.new(customer[0], customer[1], {:street =>customer[2],:city => customer[3],:state=> customer[4],:zip => customer[5]}))
+  # end
+
+  # print customers
   
+  
+    
 
 
 
@@ -24,4 +45,8 @@ class Customer
 
 
 end
+
+# customers = CSV.read('../data/customers.csv')
+# customers
+
 
