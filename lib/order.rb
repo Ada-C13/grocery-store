@@ -2,14 +2,14 @@ class Order
 	attr_reader :id
 	attr_accessor :products, :customer, :fulfillment_status
 
+	VALID_STATUSES = [:pending, :paid, :processing, :shipped, :complete]
+
 	def initialize(id, products, customer, fulfillment_status = :pending)
 		@id = id
 		@products = products
 		@customer = customer
 		@fulfillment_status = fulfillment_status
-		
-		valid_statuses = [:pending, :paid, :processing, :shipped, :complete]
-		raise ArgumentError.new("The fulfillment status is not valid!") if !valid_statuses.include?(@fulfillment_status)
+		raise ArgumentError.new("The fulfillment status is not valid!") if !VALID_STATUSES.include?(@fulfillment_status)
 	end
 
 	def add_product(name, price)
