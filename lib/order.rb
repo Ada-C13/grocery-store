@@ -53,6 +53,12 @@ class Order
   end
 
   def self.find(id)
+    Order.all.each do |order|
+      if order.id == id
+        return order
+      end
+    end
 
+    return nil
   end
 end
