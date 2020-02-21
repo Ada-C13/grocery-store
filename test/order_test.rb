@@ -190,4 +190,31 @@ describe "Order Wave 2" do
       expect(Order.find(53145)).must_be_nil
     end
   end
+
+  # Test for Wave 2 - Optional Enhancement
+  describe "Order.find_by_customer" do
+    it "Can find the first order from the CSV" do
+      fourth = Order.find_by_customer(4)
+
+      expect(fourth).must_be_kind_of Array
+      expect(fourth[0]).must_be_kind_of Order
+      expect(fourth[0].id).must_equal 11
+      expect(fourth[1]).must_be_kind_of Order
+      expect(fourth[1].id).must_equal 44
+      expect(fourth[2]).must_be_kind_of Order
+      expect(fourth[2].id).must_equal 86
+    end
+
+    it "Can find the last order from the CSV" do
+      one = Order.find_by_customer(1)
+
+      expect(one).must_be_kind_of Array
+      expect(one[0]).must_be_kind_of Order
+      expect(one[0].id).must_equal 19
+    end
+
+    it "Returns nil for an order that doesn't exist" do
+      expect(Order.find_by_customer(53145)).must_be_nil
+    end
+  end
 end

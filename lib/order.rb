@@ -64,4 +64,22 @@ class Order
 		Order.all.find {|order| order.id == find_id}
 	end
 
+	# Returns list of Order instances by customer
+	def self.find_by_customer(customer_id)
+		
+		order_by_customer = []
+		Order.all.map do |order| 
+			if order.customer.id == customer_id
+				order_by_customer << order
+			end
+		end
+		
+		if order_by_customer.length > 0
+			return order_by_customer
+		else
+			return nil
+		end
+
+	end
+
 end
