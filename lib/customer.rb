@@ -1,4 +1,6 @@
 require_relative 'order.rb'
+require 'csv'
+require 'awesome_print'
 
 class Customer 
     attr_reader :id

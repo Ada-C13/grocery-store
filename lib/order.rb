@@ -1,4 +1,6 @@
 require_relative 'order.rb'
+require 'csv'
+require 'awesome_print'
 
 class Order
     attr_reader :id
@@ -32,8 +34,9 @@ def add_product(product_name,product_price)
 end
 
 def fufillment_status(fulfillment_status)
-    if fufillment_status != :pending || :paid || :processing || :shipped ||:complete
+    status = [:pending, :paid, :processing, :shipped, :complete]
+    if status.include?fulfillment_status == false
     return raise ArgumentError
-    end
-end 
+  end 
+end
 end
