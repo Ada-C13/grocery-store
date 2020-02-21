@@ -1,3 +1,5 @@
+require 'awesome_print'
+
 class Order 
   attr_reader :id, :customer, :products
   attr_accessor :fulfillment_status
@@ -54,10 +56,15 @@ class Order
     return all_orders
   end
 
-
-
   def self.find(id)
+    all_orders = self.all
+    return all_orders.find { |order| order.id == id }
   end
+
+  # def self.find_by_customer(customer_id)
+  #   all_orders = self.all
+  #   all_orders.select { |order| order.customer == customer_id}
+  # end
 
 
 end
