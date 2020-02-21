@@ -33,7 +33,8 @@ class Order
       cost += value
     end
 
-    total = cost * 1.075
+    tax = 0.075
+    total = cost * (1 + tax)
     return total.round(2)
 
     # calculate the total cost of the order by:
@@ -52,7 +53,7 @@ class Order
 end
 
 # ! Optional
-def remove_product(name)
-  # Add a remove_product method to the Order class which will take in one parameter, a product name, and remove the product from the collection
-  # If no product with that name was found, an ArgumentError should be raised
-end
+# def remove_product(name)
+#   # Add a remove_product method to the Order class which will take in one parameter, a product name, and remove the product from the collection
+#   # If no product with that name was found, an ArgumentError should be raised
+# end
