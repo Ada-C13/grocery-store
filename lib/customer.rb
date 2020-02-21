@@ -31,8 +31,15 @@ class Customer
     return all_customers
   end
 
-  def find(id)
-    Customer.all 
+  def self.find(id)    
+    Customer.all.each do |customer|
+      if customer.id == id
+        return customer
+      end
+    end
+
+    return nil
   end
+  
 end
 
