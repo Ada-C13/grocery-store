@@ -7,7 +7,7 @@ require_relative '../lib/order'
 
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
-describe "Order Wave 1" do
+xdescribe "Order Wave 1" do
   let(:customer) do
     address = {
       street: "123 Main",
@@ -58,6 +58,13 @@ describe "Order Wave 1" do
           Order.new(1, {}, customer, fulfillment_status)
         }.must_raise ArgumentError
       end
+    end
+
+    it "stores statuses as symbols" do
+      id = 1337
+      fulfillment_status = :shipped
+      order = Order.new(id, {}, customer, fulfillment_status)
+      expect(order.fulfillment_status).must_be_kind_of Symbol
     end
   end
 
@@ -114,46 +121,43 @@ describe "Order Wave 1" do
   end
   
   describe "#remove_product" do
-  it "decreases the count of products" do
-    products = { "banana" => 1.99, "cracker" => 3.00 }
-    before_count = products.count
-    order = Order.new(1337, products, customer)
+    it "decreases the count of products" do
+      products = { "banana" => 1.99, "cracker" => 3.00 }
+      before_count = products.count
+      order = Order.new(1337, products, customer)
 
-    order.remove_product("banana")
-    expected_count = before_count - 1
-    expect(order.products.count).must_equal expected_count
+      order.remove_product("banana")
+      expected_count = before_count - 1
+      expect(order.products.count).must_equal expected_count
+    end
 
+    it "is removed from the collection of products" do
+      products = { "banana" => 1.99, "cracker" => 3.00 }
+
+      order = Order.new(1337, products, customer)
+      before_total = order.total
+
+      order.remove_product("banana")
+
+      # The remaining total must be less than before the removal
+      expect(order.total).must_be :<, before_total 
+    end
+
+    it "Raises an ArgumentError if the product does not exist" do
+      products = { "banana" => 1.99, "cracker" => 3.00 }
+
+      order = Order.new(1337, products, customer)
+
+      expect {
+        order.remove_product("durian")
+      }.must_raise ArgumentError
+    end
   end
-
-  it "is removed from the collection of products" do
-    products = { "banana" => 1.99, "cracker" => 3.00 }
-
-    order = Order.new(1337, products, customer)
-    before_total = order.total
-
-    order.remove_product("banana")
-
-    # The remaining total must be less than before the removal
-    expect(order.total).must_be :<, before_total 
-
-
-  end
-
-  it "Raises an ArgumentError if the product does not exist" do
-    products = { "banana" => 1.99, "cracker" => 3.00 }
-
-    order = Order.new(1337, products, customer)
-
-    expect {
-      order.remove_product("durian")
-    }.must_raise ArgumentError
-  end
-end
 end
 
 # TODO: change 'xdescribe' to 'describe' to run these tests
 xdescribe "Order Wave 2" do
-  describe "Order.all" do
+  xdescribe "Order.all" do
     it "Returns an array of all orders" do
       # TODO: Your test code here!
     end
