@@ -10,7 +10,16 @@ class Order
     valid_statuses =  [:pending, :paid, :processing, :shipped,:complete]
     unless valid_statuses.include?(fulfillment_status)
     raise ArgumentError, 'you have provided an invalied choice'
-    end
-    
+    end 
+  end
+
+  # Create a total method
+  def total
+   all_costs = products.map do |product, cost|
+      cost
+   end 
+   sum_costs = all_costs.sum
+   total = (sum_costs + sum_costs * 0.075).round(2)
+   return total
   end
 end
