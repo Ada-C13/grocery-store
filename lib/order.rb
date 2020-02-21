@@ -12,10 +12,6 @@ class Order
 		raise ArgumentError.new("The fulfillment status is not valid!") if !valid_statuses.include?(@fulfillment_status)
 	end
 
-	def fulfillment_status
-		return @fulfillment_status
-	end
-
 	def add_product(name, price)
 		raise ArgumentError.new("A product with this name has already been added to the order!") if @products.key?(name)
 		@products.store(name, price)
