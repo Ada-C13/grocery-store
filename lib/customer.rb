@@ -11,6 +11,7 @@ class Customer
 		@address = address
 	end
 
+	# Loads the data in the CSV to Customer Class
 	def self.all
 		customer_all = []
 		CSV.open("data/customers.csv").select do |row|
@@ -20,6 +21,7 @@ class Customer
 		return customer_all
 	end
 
+	# Finds the Customer object if the customer id is provided
 	def self.find(find_id)
 		Customer.all.find {|customer| customer.id == find_id}
 	end

@@ -11,6 +11,7 @@ class Order
 		self.fulfillment_status = fulfillment_status
 	end
 
+	# Raises argument errors if status is not recognized
 	def fulfillment_status=(value)
 		potential_status = [:pending, :paid, :processing, :shipped, :complete]
 		if potential_status.include? value
@@ -20,6 +21,7 @@ class Order
 		end
 	end 
 
+	# Calculates the total cost of order, plus tax
 	def total
 		if @products == {}
 			return 0
@@ -28,6 +30,7 @@ class Order
 		end
 	end
 
+	# Adds another product to the order
 	def add_product(product_name, price)
 		if @products.key? product_name
 			raise ArgumentError, "Product already exists"
@@ -36,6 +39,7 @@ class Order
 		end
 	end
 
+	# Removes existing product from order
 	def remove_product(product_name)
 		if @products.key? product_name
 			products.delete(product_name)
@@ -44,6 +48,7 @@ class Order
 		end
 	end
 
+	# Loads the data in the CSV to Order Class
 	def self.all
 		order_all = []
 
@@ -60,6 +65,7 @@ class Order
 		return order_all
 	end
 
+	# Returns the order by using the order id
 	def self.find(find_id)
 		Order.all.find {|order| order.id == find_id}
 	end
