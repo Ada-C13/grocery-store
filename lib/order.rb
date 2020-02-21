@@ -50,7 +50,7 @@ class Order
     end 
   end 
 
-  
+
   def self.all 
     order_instances = CSV.read("data/orders.csv").map do |order_data|
 
@@ -58,16 +58,16 @@ class Order
      
       products_data = order_data[1].split(";")  # i.e. ["Miso:88.86", "White Wine:8.52", "Turnips:30.73"]
 
-      products = {}
 
-      products_data.each do |product_data| # i.e. "Miso:88.86"
-
-        # Reassign the product_data
+      products = products_data.map do |product_data| # i.e. "Miso:88.86"
+        
+        # Reassign the product_data 
         product_data = product_data.split(":")  # i.e. ["Miso", "88.86"]
+      
+        [product_data[0], product_data[1].to_f] # [key, value]
+      end.to_h 
 
-        products[product_data[0]] = product_data[1].to_f
-      end 
-
+      
       customer_id = order_data[2].to_i 
       fulfillment_status = order_data[3].to_sym
       customer_instance = Customer.find(customer_id)
