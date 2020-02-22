@@ -67,8 +67,8 @@ class Order
       if order.id == id
         return order
       end
-      return nil
-    end 
+    end
+    return nil
   end
 end
 
