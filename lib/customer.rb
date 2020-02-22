@@ -3,7 +3,7 @@ require "csv"
 class Customer
   attr_reader :id
   attr_accessor :email, :address
-  # (num, string, hash)
+
   def initialize(id, email, address)
     @id = id
     @email = email
@@ -13,7 +13,7 @@ class Customer
   def self.all
     customers = CSV.read("./data/customers.csv")
     customers_lists = []
-    # form the Customer instances into a format that matches what we have in the Constructor (id is a num, email is a string, address is a hash)
+    
     customers.each do |line|
       hash_address = {
         :street => line[2], 
@@ -26,21 +26,13 @@ class Customer
     return customers_lists
   end
 
-  def self.find(id) # num  
-    # return an instance of Customer where the value of the if field in the CSV matches the passed id.
-    # iterate throug the customers_lists.id
+  def self.find(id)
     customers_info = Customer.all
     customers_info.find do |customer|
-    # if id == customers_lists.id
       if customer.id == id
-       # return that specific instance
         return customer
       end
     end
-
     return nil
   end
 end
-
-# p Customer.all.first
-# p Customer.find(1)
