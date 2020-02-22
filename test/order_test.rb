@@ -65,10 +65,12 @@ describe "Order Wave 1" do
     end
   end
 
+  let (:order) do
+    order = Order.new(1337, products, customer)
+  end
+
   describe "#total" do
     it "Returns the total from the collection of products" do
-      order = Order.new(1337, products, customer)
-
       expected_total = 5.36
 
       expect(order.total).must_equal expected_total
@@ -84,7 +86,6 @@ describe "Order Wave 1" do
   describe "#add_product" do
     it "Increases the number of products" do
       before_count = products.count
-      order = Order.new(1337, products, customer)
 
       order.add_product("salad", 4.25)
       expected_count = before_count + 1
@@ -92,14 +93,11 @@ describe "Order Wave 1" do
     end
 
     it "Is added to the collection of products" do
-      order = Order.new(1337, products, customer)
-
       order.add_product("sandwich", 4.25)
       expect(order.products.include?("sandwich")).must_equal true
     end
 
     it "Raises an ArgumentError if the product is already present" do
-      order = Order.new(1337, products, customer)
       before_total = order.total
 
       expect {
@@ -114,7 +112,6 @@ describe "Order Wave 1" do
   describe "#remove_product" do
     it "Decreases the number of products" do
       before_count = products.count
-      order = Order.new(1337, products, customer)
 
       order.remove_product("banana")
       expected_count = before_count - 1
@@ -122,14 +119,11 @@ describe "Order Wave 1" do
     end
 
     it "Is removed from the collection of products" do
-      order = Order.new(1337, products, customer)
-
       order.remove_product("banana")
       expect(order.products.include?("banana")).must_equal false
     end
 
     it "Raises an ArgumentError if no product was found" do
-      order = Order.new(1337, products, customer)
       before_total = order.total
 
       expect {
