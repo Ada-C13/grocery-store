@@ -45,8 +45,8 @@ class Customer
 
 	# Adds the info of a new customer to a new file.
 	def self.save(filename, new_customer)
-		new_customer_file = CSV.open(filename, "a+")
-		address_array = []
+		new_customer_file = CSV.open(filename, "a+") # Create file.
+		address_array = [] # Variables holding values representing customer's address.
 
 		new_customer.address.values.each do |value|
 			address_array << value
