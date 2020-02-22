@@ -3,6 +3,7 @@ class Order
   attr_reader :id
   attr_accessor :products, :customer, :fulfillment_status
   
+  
   def initialize(id, products, customer, fulfillment_status = :pending)
     @id = id
     @products = products
@@ -31,33 +32,25 @@ class Order
     end
   end
   
-  def parse_products
-    # make this operate on an individual order's string
-    orders = CSV.read('./data/orders.csv')
-    products = {}
+  def self.parse_products(input)
+    product_hash = {}
     
-    orders.each do |order|
-      split_food_price = ""
-      
-      squished_food_price = order[1].split(';')
-      
-      squished_food_price.each do |item_with_price|
-        split_food_price = item_with_price.split(':')
-        name = split_food_price[0]
-        price = split_food_price[1].to_f
-        products[name] = price
-      end
-      
+    first_split = input.split(';') 
+    
+    first_split.each do |product|
+      final_split = product.split(':')
+      name = final_split[0]
+      price = final_split[1].to_f
+      product_hash[name] = price
     end
     
-    return products
+    return product_hash
   end
   
   #what the fuck does this actually return??
   #and is it doing what we want? maybe not!
   
   
-  # TODO Order.all calls Customer.find to set up the composition relation
   def self.all
     orders = CSV.read('./data/orders.csv')
     
@@ -65,12 +58,10 @@ class Order
     new_order = ""
     
     orders.each do |order|
-      id = order[0]
-      products = parse_products
-      # tim is great!
-      # we want to take order[1] and invoke the parse_products method ON IT IN HERE
-      customer = order[2] # this actually should be connected to the customer object associated with the ID
-      fulfillment_status = order[3]
+      id = order[0].to_i
+      products = parse_products(order[1])
+      customer = Customer.find(order[2].to_i)
+      fulfillment_status = order[3].to_sym
       
       new_order = Order.new(id, products, customer, fulfillment_status)
       
@@ -83,5 +74,16 @@ class Order
   def self.find(id)
     # returns a single instance of order object where value of id matches passed id
     # use order.all (not the CSV data)
+    all_orders = self.all
+    
+    found_orders_array = all_orders.select { |order| order.id == id }
+    
+    if found_orders_array.empty?
+      return nil
+    else
+      found_order = found_orders_array[0]
+    end
+    return found_order
   end
+  
 end
