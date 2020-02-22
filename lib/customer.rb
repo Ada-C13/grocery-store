@@ -1,5 +1,4 @@
 require "csv"
-require "awesome_print"
 
 class Customer
   attr_reader :id
@@ -21,7 +20,7 @@ class Customer
         street: customer[2],
         city: customer[3],
         state: customer[4],
-        zip: customer[5]
+        zip: customer[5],
       }
       Customer.new(customer_id, customer_email, address)
     end
@@ -30,10 +29,9 @@ class Customer
 
   #find the id that matches
   def self.find(id)
-    all_customers = self.all
-    all_customers.find do |customer| 
-        id == customer.id 
-    end 
+    all_customers = Customer.all
+    all_customers.find do |customer|
+      id == customer.id
+    end
   end
-
 end

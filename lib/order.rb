@@ -9,9 +9,9 @@ class Order
     @id = id
     @products = products
     @customer = customer
-    @fulfillment_status = fulfillment_status
     valid_statuses = %i[pending paid processing shipped complete]
     raise(ArgumentError, "Not a valid status") unless valid_statuses.include? fulfillment_status
+    @fulfillment_status = fulfillment_status
   end
 
   #add total method to calculate the total
@@ -61,20 +61,20 @@ class Order
     return orders
   end
 
-  #   return instance(s) of all placed order mathcing id
+  #   return an instance of order using order id
   def self.find(id)
     all_orders = Order.all
     return all_orders.find do |order|
-      id == order.id
-    end
+             id == order.id
+           end
   end
 
-  #returns instance(s) of all order placed by matching customer id
+  #returns instance(s) of all order placed using customer id
   def self.find_by_customer(customer_id)
     all_orders = Order.all
 
     return all_orders.find_all do |order|
-      customer_id == order.customer.id
-    end
+             customer_id == order.customer.id
+           end
   end
 end
