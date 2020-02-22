@@ -1,8 +1,9 @@
 require 'minitest/autorun'
 require 'minitest/reporters'
 require 'minitest/skip_dsl'
+require 'pry'
 
-require_relative '../lib/customer'
+require_relative '../lib/customer.rb'
 
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
@@ -33,18 +34,18 @@ describe "Customer Wave 1" do
 end
 
 # TODO: remove the 'x' in front of this block when you start wave 2
-xdescribe "Customer Wave 2" do
+describe "Customer Wave 2" do
   describe "Customer.all" do
     it "Returns an array of all customers" do
       customers = Customer.all
 
       expect(customers.length).must_equal 35
-      customers.each do |c|
-        expect(c).must_be_kind_of Customer
+      customers.each do |customer|
+        expect(customer).must_be_kind_of Customer
 
-        expect(c.id).must_be_kind_of Integer
-        expect(c.email).must_be_kind_of String
-        expect(c.address).must_be_kind_of Hash
+        expect(customer.id).must_be_kind_of Integer
+        expect(customer.email).must_be_kind_of String
+        expect(customer.address).must_be_kind_of Hash
       end
     end
 
