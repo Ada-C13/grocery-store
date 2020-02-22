@@ -29,7 +29,10 @@ class Customer
   def self.find(id)
     list_of_customers = Customer.all
     list_of_customers.each do|customer|
-    customer.id
+      if customer.id == id 
+        return customer
+      end
     end 
+    return nil
   end
-  end
+end
