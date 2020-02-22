@@ -10,16 +10,29 @@ class Customer
     @address = address
   end
 
-  customer_csv = CSV.parse(File.read(__dir__ + "/../data/customers.csv"), headers: true)
-
   def self.all
+    all = []
     # returns a collection of Customer instances, representing all of the Customer described in the CSV
+    CSV.read("data/customers.csv").each do |customer|
+      id = customer[0].to_i
+      email = customer[1]
+      address = {}
+      address[:street] = customer[2]
+      address[:city] = customer[3]
+      address[:state] = customer[4]
+      address[:zip] = customer[5]
+
+      all << Customer.new(id, email, address)
+    end
+    return all
   end
 
   def self.find(id)
-    # returns an instance of Customer where the value of the id field in the CSV matches the passed parameter
-    # should not parse the CSV file itself. Instead it should invoke Customer.all and search through the results for a customer with a matching ID
-    # What should your program do if Customer.find is called with an ID that doesn't exist? Hint: what does the find method for a Ruby array do?
-    # https://ruby-doc.org/core/Enumerable.html#method-i-find
+    Customer.all.each do |customer|
+      if customer.id == id
+        return customer
+      end
+    end
+    return nil
   end
 end

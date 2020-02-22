@@ -39,17 +39,9 @@ class Order
     tax = 0.075
     total = cost * (1 + tax)
     return total.round(2)
-
-    # calculate the total cost of the order by:
-    # Summing up the products
-    # Adding a 7.5% tax
-    # Rounding the result to two decimal places
   end
 
   def add_product(name, price)
-    # An add_product method which will take in two parameters, product name and price, and add the data to the product collection
-    # If a product with the same name has already been added to the order, an ArgumentError should be raised
-
     raise ArgumentError.new("That product already exists.") if @products.key?(name)
     @products[name] = price
   end
