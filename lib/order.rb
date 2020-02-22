@@ -12,28 +12,22 @@ class Order
     @customer = customer
     @fulfillment_status = fulfillment_status
     valid_statuses =  [:pending, :paid, :processing, :shipped,:complete]
-    unless valid_statuses.include?(fulfillment_status)
-    raise ArgumentError, 'you have provided an invalied choice'
-    end 
+    raise ArgumentError if !valid_statuses.include?(fulfillment_status)
   end
 
   # Create a total method
   def total
-   all_costs = products.map do |product, cost|
-      cost
-   end 
-   sum_costs = all_costs.sum
-   total = (sum_costs + sum_costs * 0.075).round(2)
-   return total
+    sum_costs = products.values.sum
+    total = (sum_costs + sum_costs * 0.075).round(2)
+    return total
   end
-
 
 # Create add_product method 
   def add_product(product_name, price)
-    # get all the names of product from products hash
+    # If a product with the same name has already been added to the order, raise an ArgumentError
     raise ArgumentError if products.key?(product_name)
-    @products[product_name] = price
-    return @products
+    products[product_name] = price
+    return products
   end
 
   # def product_to_hash(string)
@@ -48,7 +42,8 @@ class Order
   #   end
   #   return product_hash
   # end
-
+  
+  # Create self.all
   def self.all
       orders = []
       CSV.read('./data/orders.csv').each do |order|
@@ -66,7 +61,7 @@ class Order
       return orders
     end
  
-
+  # Create self.find(id)  
   def self.find(id)
     Order.all.each do |order|
       if order.id == id
@@ -75,7 +70,6 @@ class Order
       return nil
     end 
   end
-
 end
 
   
