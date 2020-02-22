@@ -1,3 +1,5 @@
+require_relative 'customer'
+
 class Order
   attr_reader :id
   attr_accessor :products, :customer, :fulfillment_status
@@ -60,5 +62,27 @@ class Order
     end
 
     return nil
+  end
+
+  def self.find_by_customer(customer_id)
+    customer_orders = []
+
+    Order.all.each do |order|
+      if order.customer.id == customer_id
+        customer_orders << order
+      end
+    end
+
+    puts "Customer ##{customer_id} Order History"
+
+    customer_orders.each do |order|
+      puts "\nOrder ID: #{order.id}"
+      puts "Status: #{order.fulfillment_status}"
+      puts "Items in order: "
+      order.products.each do |name, price|
+        puts "  #{name} - #{price}"
+      end
+    end
+
   end
 end
