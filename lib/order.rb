@@ -79,7 +79,6 @@ class Order
   end
 
   def self.find_by_customer(customer_id)
-    order_w_customer_id = 0
     all_order_from_customer = Array.new
     self.all.each do |order|
       if order.customer.id == customer_id
@@ -92,4 +91,3 @@ class Order
   end
 end
 
-puts Order.find_by_customer(25)

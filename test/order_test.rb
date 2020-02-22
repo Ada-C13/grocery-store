@@ -121,7 +121,7 @@ describe "Order Wave 1" do
       product = "banana"
 
       order.remove_product(product)
-      expected_count = before_count -1
+      expected_count = (before_count-1)
 
       expect(order.products.count).must_equal expected_count
     end
