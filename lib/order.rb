@@ -25,39 +25,39 @@ class Order
     @products[product_name] = price
   end
 
-  def remove_product(product_name)
-    raise ArgumentError if @products.keys.include?(product_name) == false
-    @products.delete_if {|key, value| key >= product_name } 
+  # def remove_product(product_name)
+  #   raise ArgumentError if @products.keys.include?(product_name) == false
+  #   @products.delete_if {|key, value| key >= product_name } 
+  # end
+
+  def self.all
+    all_orders = []
+    filename = "./data/orders.csv"
+    CSV.read(filename).each do |row|
+      id = row[0].to_i
+      products ={}
+      products_string = row[1].split(';')
+      products_string.each do |product|
+        product_split = product.split(':')
+        products[product_split[0]] = product_split[1].to_f
+      end
+      customer = Customer.find(row[2].to_i)
+      fulfillment_status = row[3].to_sym
+      order = Order.new(id, products, customer, fulfillment_status)
+      all_orders << order
+    end
+    return all_orders
   end
 
-  # def self.all
-  #   all_orders = []
-  #   filename = "./data/orders.csv"
-  #   CSV.read(filename).each do |row|
-  #     id = row[0].to_i
-  #     products ={}
-  #     products_string = row[1].split(';')
-  #     products_string.each do |product|
-  #       product_split = product.split(':')
-  #       products[product_split[0]] = product_split[1].to_f
-  #     end
-  #     customer = Customer.find(row[2].to_i)
-  #     fulfillment_status = row[3].to_sym
-  #     order = Order.new(id, products, customer, fulfillment_status)
-  #     all_orders << order
-  #   end
-  #   return all_orders
-  # end
-
-  # def self.find(id)
-  #   all_orders = Order.all
-  #   all_orders.each do |order|
-  #     if order.id == id
-  #       return order
-  #     end
-  #   end
-  #   return nil
-  # end
+  def self.find(id)
+    all_orders = Order.all
+    all_orders.each do |order|
+      if order.id == id
+        return order
+      end
+    end
+    return nil
+  end
 
   # # Order.find_by_customer(customer_id) - returns a list of Order instances where the value of the customer's ID matches the passed parameter.
   # def self.find_by_customer(customer_id)
