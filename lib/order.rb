@@ -1,8 +1,7 @@
 require_relative 'customer'
-
 class Order
-attr_reader :id, :customer 
-attr_accessor :products, :fulfillment_status
+  attr_reader :id, :customer 
+  attr_accessor :products, :fulfillment_status
 
   def initialize(id, products, customer, fulfillment_status=:pending)
     @id = id
@@ -16,7 +15,6 @@ attr_accessor :products, :fulfillment_status
   end 
 
   def total
-   
    if @products.length == 0 
       return 0.0
    end 
@@ -28,7 +26,6 @@ attr_accessor :products, :fulfillment_status
   end 
 
   def add_product(name, price)
-
     if @products.include?(name)
       raise ArgumentError.new("This product already present")
     else
@@ -43,13 +40,11 @@ attr_accessor :products, :fulfillment_status
       raise ArgumentError.new("did not find that product")
     end 
   end
+
   def self.all
    array_of_orders = []
-   arr = []
     CSV.foreach("../data/orders.csv") do |row|
       arr = row[1].split(";")
-      #puts arr.to_s
-
       hash = arr.map do |product|
         [product.split(":")[0], product.split(":")[1].to_f]
       end 
@@ -58,7 +53,6 @@ attr_accessor :products, :fulfillment_status
     end 
    return array_of_orders
   end
-
 
   def self.find(id, function=:all)
       self.all.each do |order|
@@ -69,10 +63,4 @@ attr_accessor :products, :fulfillment_status
       raise ArgumentError.new("Did not find order with this ID")
   end 
 
-
 end 
-def main
-  
-end 
-
-main

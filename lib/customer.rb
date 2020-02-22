@@ -13,11 +13,9 @@ class Customer
   def self.all
     array_of_customers = []
     CSV.foreach("../data/customers.csv") do |row|
-      #arr = row.split(",")
       address = {:street => row[2] , :city => row[3], :state => row[4], :zip => row[5]}
       cust = Customer.new(row[0].to_i, row[1], address)
       array_of_customers << cust
-      #puts "Name: #{cust.id} email #{cust.email} address:#{cust.address}"
     end 
     return array_of_customers
   end 
@@ -30,11 +28,6 @@ class Customer
     end
     return nil
   end 
-end 
-
-def main 
   
-  #puts "Customer #{customer.find(2)}"
 end 
 
-main
