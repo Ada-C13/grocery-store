@@ -35,10 +35,10 @@ class Customer
       if customer.id == id
        # return that specific instance
         return customer
-      else
-       return nil
       end
     end
+
+    return nil
   end
 end
 

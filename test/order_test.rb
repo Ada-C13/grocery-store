@@ -114,10 +114,23 @@ describe "Order Wave 1" do
 end
 
 # TODO: change 'xdescribe' to 'describe' to run these tests
-xdescribe "Order Wave 2" do
+describe "Order Wave 2" do
   describe "Order.all" do
     it "Returns an array of all orders" do
       # TODO: Your test code here!
+      #Arrange & Act
+       orders = Order.all
+      #Assert
+      expect(orders).must_be_kind_of Array
+
+      expect(orders.length).must_equal 100
+      orders.each do |order|
+        expect(order).must_be_kind_of Order
+        expect(order.id).must_be_kind_of Integer
+        expect(order.customer).must_be_instance_of Customer
+        expect(order.fulfillment_status).must_be_kind_of Symbol
+      end
+
     end
 
     it "Returns accurate information about the first order" do
@@ -142,20 +155,53 @@ xdescribe "Order Wave 2" do
 
     it "Returns accurate information about the last order" do
       # TODO: Your test code here!
+      #Arrange
+      id = 100
+      products = {
+        "Amaranth" => 83.81,
+        "Smoked Trout" => 70.6,
+        "Cheddar" => 5.63
+      }
+      customer_id = 20
+      fulfillment_status = :pending
+      #Act
+      last_order = Order.all.last
+
+      #Assert
+      expect(last_order.id).must_equal id
+      expect(last_order.products).must_equal products
+      expect(last_order.customer).must_be_kind_of Customer
+      expect(last_order.customer.id).must_equal customer_id
+      expect(last_order.fulfillment_status).must_equal fulfillment_status
     end
   end
 
-  describe "Order.find" do
+  xdescribe "Order.find" do
     it "Can find the first order from the CSV" do
       # TODO: Your test code here!
+      # Arrange
+      
+      # Act
+
+      # Assert
     end
 
     it "Can find the last order from the CSV" do
       # TODO: Your test code here!
+        # Arrange
+
+      # Act
+
+      # Assert
     end
 
     it "Returns nil for an order that doesn't exist" do
       # TODO: Your test code here!
+        # Arrange
+
+      # Act
+
+      # Assert
     end
   end
 end

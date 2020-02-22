@@ -1,10 +1,11 @@
 require_relative "customer"
+require "pry"
 
 class Order
   attr_reader :id, :customer
   attr_accessor :products, :fulfillment_status
+  
   # (num, hash, instance of customer, symbol)
-
   def initialize(id, products, customer, fulfillment_status = :pending)
     @id = id
     @products = products
@@ -34,10 +35,38 @@ class Order
     end
   end
 
+  # <Order:0x00007fac2e023af0 @id=1, @products={"apple"=>1.5, "banana"=>3.0}, @customer=#<Customer:0x00007fac2e023c58 @id=123, @email="amy@ada.com", @address={:street=>"123 Main", :city=>"Seattle", :state=>"WA", :zip=>"98101"}>, @fulfillment_status=:pending>
 
+  # ["98", "Cumquat:3.14;Peppers:65.33", "26", "processing"]
+  def self.all
+    # return a collection of order from the csv
+    orders = CSV.read("./data/orders.csv")
+    orders_lists = []
+    orders.each do |line|
+      id = line[0].to_i
+      products = line[1].split(";").map{|item| item.split(":")}.map{|key, value| [key, value.to_f] }.to_h
+      id_num = line[2].to_i
+      customer = Customer.find(id_num)
+      fulfillment_status = line[3].to_sym
+      
+      orders_lists << Order.new(id, products, customer, fulfillment_status)
+    end
+    return orders_lists
+  end
+
+  def self.find(id) #num
+    orders = Order.all
+    orders.each do |order|
+      if order.id == id
+        return order
+      end
+    end
+    return nil
+  end
 
 end
 
+p a = Order.find(25)
 
 # amy = Customer.new(123, "amy@ada.com", {
 #   street: "123 Main",
@@ -45,11 +74,13 @@ end
 #   state: "WA",
 #   zip: "98101"
 # })
-# p amy
+# # p amy
 
 # p a = Order.new(1, {"apple" => 1.5, "banana" => 3.0}, amy)
-# p a
+
 # p a.add_product("apple", 1.3)
+
+# p Order.all
 
 
 
