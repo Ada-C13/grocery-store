@@ -18,20 +18,15 @@ class Customer
   end
 
   def self.all
-    filename = "data/customers.csv"
-    all_customers = []
-    csv_all = CSV.read(filename)
+    filename      = "data/customers.csv"
+    csv_all       = CSV.read(filename)
 
+    all_customers = []
     csv_all.each do |csv_row|
 
-      id    = csv_row[0].to_i
-      email = csv_row[1]
-      address = {
-        street: csv_row[2],
-        city: csv_row[3],
-        state: csv_row[4],
-        zip: csv_row[5]
-      }
+      id      = csv_row[0].to_i
+      email   = csv_row[1]
+      address = { street: csv_row[2], city: csv_row[3], state: csv_row[4], zip: csv_row[5] }
 
       customer = Customer.new(id, email, address)
       all_customers << customer

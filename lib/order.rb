@@ -11,7 +11,7 @@ class Order
   attr_accessor :products, :customer, :fulfillment_status
 
   def initialize(id, products, customer, fulfillment_status = :pending)
-    @id = id.to_i
+    @id = id
     @products = products
     @customer = customer
     @fulfillment_status = fulfillment_status
@@ -42,6 +42,37 @@ class Order
       raise ArgumentError, "Product not in this order"
     end
     @products.delete(name)
+  end
+
+  def self.products_str_to_hash(products_str)
+    products_arr  = products_str.split(";")
+    products_hash = {}
+    products_arr.each do |item|
+      item_info = item.split(":") 
+      products_hash[item_info[0]] = item_info[1].to_f
+    end
+
+    return products_hash
+  end
+
+
+  def self.all
+    filename   = "data/orders.csv"
+    csv_all    = CSV.read(filename)
+
+    all_orders = []
+    csv_all.each do |csv_row|
+
+      order_id = csv_row[0].to_i
+      products = Order.products_str_to_hash(csv_row[1])
+      customer = Customer.find(csv_row[2].to_i)
+      fulfillment_status = csv_row[3].to_sym
+
+      order = Order.new(order_id, products, customer, fulfillment_status)
+      all_orders << order
+
+    end
+    return all_orders
   end
 
 end
