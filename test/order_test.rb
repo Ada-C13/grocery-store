@@ -117,38 +117,29 @@ end
 describe "Order Wave 2" do
   describe "Order.all" do
     it "Returns an array of all orders" do
-      # TODO: Your test code here!
-    end
-
-    it "Returns accurate information about the first order" do
-      id = 1
-      products = {
-        "Lobster" => 17.18,
-        "Annatto seed" => 58.38,
-        "Camomile" => 83.21
-      }
-      customer_id = 25
-      fulfillment_status = :complete
-
-      order = Order.all.first
-
-      # Check that all data was loaded as expected
-      expect(order.id).must_equal id
-      expect(order.products).must_equal products
-      expect(order.customer).must_be_kind_of Customer
-      expect(order.customer.id).must_equal customer_id
-      expect(order.fulfillment_status).must_equal fulfillment_status
+      orders = Order.all
+      expect(orders).must_be_kind_of Array
+      orders.each do |o|
+        expect(o).must_be_kind_of Order
+        expect(o.id).must_be_kind_of Integer
+        expect(o.products).must_be_kind_of Hash
+        expect(o.customer).must_be_kind_of Customer
+        expect(o.fulfillment_status).must_be_kind_of Symbol
+      end
+      expect(orders.length).must_equal 100
     end
 
     it "Returns accurate information about the last order" do
-
-      last = Order.all.last
     
-      expect(last.id).must_equal 100
-      expect(last.products).must_be_kind_of Hash
-      expect(last.customer).must_be_kind_of Customer
-      expect(last.fulfillment_status).must_be_kind_of Symbol
-
+      products = {"Amaranth" => 83.81, "Smoked Trout" => 70.6, "Cheddar" => 5.63}
+  
+      order = Order.all.last
+      # Check that all data was loaded as expected
+      expect(order.id).must_equal 100
+      expect(order.products).must_equal products 
+      expect(order.customer).must_be_kind_of Customer
+      expect(order.customer.id).must_equal 20
+      expect(order.fulfillment_status).must_equal :pending
     end
   end
 
