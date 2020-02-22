@@ -25,10 +25,10 @@ class Order
     @products[product_name] = price
   end
 
-  # def remove_product(product_name)
-  #   raise ArgumentError if @products.keys.include?(product_name) == false
-  #   @products.delete_if {|key, value| key >= product_name } 
-  # end
+  def remove_product(product_name)
+    raise ArgumentError if @products.keys.include?(product_name) == false
+    @products.delete_if {|key, value| key >= product_name } 
+  end
 
   def self.all
     all_orders = []
@@ -59,19 +59,18 @@ class Order
     return nil
   end
 
-  # # Order.find_by_customer(customer_id) - returns a list of Order instances where the value of the customer's ID matches the passed parameter.
-  # def self.find_by_customer(customer_id)
-  #   all_orders = Order.all
-  #   customer_orders = []
-  #   all_orders.each do |order|
-  #     if order.customer == customer_id
-  #       customer_orders << order
-  #     end
-  #   end
-  #   if all_orders.map{ |order| order.customer}.include?(customer_id) == false
-  #     return nil
-  #   end
-  #   return customer_orders
-  # end
+  # Order.find_by_customer(customer_id) - returns a list of Order instances where the value of the customer's ID matches the passed parameter.
+  def self.find_by_customer(customer_id)
+    all_orders = Order.all
+    raise ArgumentError if all_orders.map{ |order| order.customer.id}.include?(customer_id) == false
+    
+    customer_orders = []
+    all_orders.each do |order|
+      if order.customer.id == customer_id
+        customer_orders << order
+      end
+    end
+    return customer_orders    
+  end
 
 end

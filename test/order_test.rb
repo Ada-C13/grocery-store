@@ -112,7 +112,7 @@ describe "Order Wave 1" do
     end
   end
 
-  xdescribe "#remove_product" do
+  describe "#remove_product" do
     it "Reduces the number of products" do
       products = { "banana" => 1.99, "cracker" => 3.00 }
       before_count = products.count
@@ -229,25 +229,17 @@ describe "Order Wave 2" do
     end
   end
 
-  # describe "Order.find_by_customer" do
-  #   it "Can make a collection of a single customer orders" do
-  #     customer_25 = Order.find_by_customer(25)
+  describe "Order.find_by_customer" do
+    it "Can make a collection of all orders of a single customer orders" do
+      customer_25 = Order.find_by_customer(25)
+      expect(customer_25).must_be_kind_of Array
+      expect(customer_25.length).must_equal 6
+    end
 
-  #     expect(first).must_be_kind_of Order
-  #     expect(first.id).must_equal 1
-  #   end
-
-  #   it "Can find the last order from the CSV" do
-  #     last = Order.find_by_customer(100)
-
-  #     expect(last).must_be_kind_of Order
-  #     expect(last.id).must_equal 100
-  #   end
-
-  #   it "Returns nil for a customer id that doesn't exist" do
-  #     expect(Order.find_by_customer(53145)).must_be_nil
-  #   end
-  # end
+    it "Returns nil for a customer id that doesn't exist" do
+      expect {Order.find_by_customer(53145)}.must_raise ArgumentError
+    end
+  end
 
   
 end
