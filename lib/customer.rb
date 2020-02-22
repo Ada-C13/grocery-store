@@ -41,5 +41,15 @@ class Customer
     return nil
   end
   
+  def self.save(filename, new_customer)
+    address = new_customer.address
+
+    CSV.open("#{filename}", "wb") do |csv|
+      csv << [new_customer.id, new_customer.email, address[:street], address[:city], address[:state], address[:zip]]
+    end
+
+    return true
+  end
+
 end
 
