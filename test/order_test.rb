@@ -7,7 +7,7 @@ require_relative '../lib/order'
 
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
-xdescribe "Order Wave 1" do
+describe "Order Wave 1" do
   let(:customer) do
     address = {
       street: "123 Main",
@@ -16,6 +16,10 @@ xdescribe "Order Wave 1" do
       zip: "98101"
     }
     Customer.new(123, "a@a.co", address)
+  end
+
+  let(:products) do
+    products = { "banana" => 1.99, "cracker" => 3.00 }
   end
 
   describe "#initialize" do
@@ -63,7 +67,6 @@ xdescribe "Order Wave 1" do
 
   describe "#total" do
     it "Returns the total from the collection of products" do
-      products = { "banana" => 1.99, "cracker" => 3.00 }
       order = Order.new(1337, products, customer)
 
       expected_total = 5.36
@@ -80,7 +83,6 @@ xdescribe "Order Wave 1" do
 
   describe "#add_product" do
     it "Increases the number of products" do
-      products = { "banana" => 1.99, "cracker" => 3.00 }
       before_count = products.count
       order = Order.new(1337, products, customer)
 
@@ -90,7 +92,6 @@ xdescribe "Order Wave 1" do
     end
 
     it "Is added to the collection of products" do
-      products = { "banana" => 1.99, "cracker" => 3.00 }
       order = Order.new(1337, products, customer)
 
       order.add_product("sandwich", 4.25)
@@ -98,8 +99,6 @@ xdescribe "Order Wave 1" do
     end
 
     it "Raises an ArgumentError if the product is already present" do
-      products = { "banana" => 1.99, "cracker" => 3.00 }
-
       order = Order.new(1337, products, customer)
       before_total = order.total
 
@@ -111,10 +110,40 @@ xdescribe "Order Wave 1" do
       expect(order.total).must_equal before_total
     end
   end
+
+  describe "#remove_product" do
+    it "Decreases the number of products" do
+      before_count = products.count
+      order = Order.new(1337, products, customer)
+
+      order.remove_product("banana")
+      expected_count = before_count - 1
+      expect(order.products.count).must_equal expected_count
+    end
+
+    it "Is removed from the collection of products" do
+      order = Order.new(1337, products, customer)
+
+      order.remove_product("banana")
+      expect(order.products.include?("banana")).must_equal false
+    end
+
+    it "Raises an ArgumentError if no product was found" do
+      order = Order.new(1337, products, customer)
+      before_total = order.total
+
+      expect {
+        order.remove_product("potato")
+      }.must_raise ArgumentError
+
+      # The list of products should not have been modified
+      expect(order.total).must_equal before_total
+    end
+  end
 end
 
 # TODO: change 'xdescribe' to 'describe' to run these tests
-describe "Order Wave 2" do
+xdescribe "Order Wave 2" do
   describe "Order.all" do
     it "Returns an array of all orders" do
       orders = Order.all
