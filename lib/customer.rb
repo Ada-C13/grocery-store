@@ -9,7 +9,6 @@ class Customer
     @address = address
   end  
 
-  
   def self.all
     customers = []
     CSV.read('./data/customers.csv').each do |customer|
@@ -26,5 +25,4 @@ class Customer
     end
     return nil
   end
-
 end
