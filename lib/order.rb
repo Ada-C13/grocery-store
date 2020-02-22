@@ -1,3 +1,5 @@
+require 'csv'
+
 class Order
   attr_reader :id
   attr_accessor :products, :customer, :fulfillment_status
@@ -10,6 +12,37 @@ class Order
     @fulfillment_status = fulfillment_status
   end
 
+  def self.products_to_h(products_input)
+    products_input = products_input.split(";")
+    products = {}
+    products_input.each do |product|
+      product = product.split(":")
+      products[product[0]] = product[1].to_f
+    end
+    return products
+  end
+
+  def self.all
+    all_orders = []
+    CSV.read('data/orders.csv').each do |order|
+      id = order[0].to_i
+      products = Order.products_to_h(order[1])
+      customer = Customer.find(order[2].to_i)
+      fulfillment_status = order[3].to_sym
+      all_orders << Order.new(id, products, customer, fulfillment_status)
+    end
+    return all_orders
+  end
+
+  def self.find(id)
+    Order.all.each do |order|
+      if order.id == id
+        return order
+      end
+    end
+    return nil
+  end
+  
   def total
    total = 0
     @products.each do |key, value|
