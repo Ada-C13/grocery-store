@@ -81,6 +81,8 @@ class Order
       end
     end
 
+    return nil if customer_orders == []
+
     puts "Customer ##{customer_id} Order History"
 
     customer_orders.each do |order|
