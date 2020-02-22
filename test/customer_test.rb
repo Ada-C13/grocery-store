@@ -20,7 +20,7 @@ describe "Customer Wave 1" do
     it "Takes an ID, email and address info" do
       cust = Customer.new(ID, EMAIL, ADDRESS)
 
-      expect(cust).must_respond_to :id
+      expect(cust).must_respond_to :id #should have :id method 
       expect(cust.id).must_equal ID
 
       expect(cust).must_respond_to :email
@@ -33,7 +33,7 @@ describe "Customer Wave 1" do
 end
 
 # TODO: remove the 'x' in front of this block when you start wave 2
-xdescribe "Customer Wave 2" do
+describe "Customer Wave 2" do
   describe "Customer.all" do
     it "Returns an array of all customers" do
       customers = Customer.all
