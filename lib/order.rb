@@ -10,15 +10,16 @@ class Order
     @customer = customer
     @fulfillment_status = fulfillment_status
     valid_statuses = %i[pending paid processing shipped complete]
-      raise ArgumentError if !valid_statuses.include?(@fulfillment_status)
+      if !valid_statuses.include?(@fulfillment_status)
+        raise ArgumentError.new('Invalid status.')
+      end
   end
 
   def total
     if @products == {}
       return 0
     else
-      total = @products.values.reduce(:+)
-      total = total * 1.075
+      total = @products.values.reduce(:+) * 1.075
 
       return ('%.2f' % total).to_f
     end
@@ -26,7 +27,7 @@ class Order
 
   def add_product(name, price)
     if @products.key?(name)
-      raise ArgumentError
+      raise ArgumentError.new('That product is already in the list.')
     else
       @products[name] = price
     end
@@ -36,7 +37,7 @@ class Order
     if @products.key?(name)
       @products.delete(name)
     else
-      raise ArgumentError
+      raise ArgumentError.new('That product does not appear in the list.')
     end
   end
 
@@ -64,9 +65,7 @@ class Order
 
   def self.find(id)
     Order.all.each do |order|
-      if order.id == id
-        return order
-      end
+      return order if order.id == id
     end
 
     return nil
@@ -84,7 +83,6 @@ class Order
     return nil if customer_orders == []
 
     puts "Customer ##{customer_id} Order History"
-
     customer_orders.each do |order|
       puts "\nOrder ID: #{order.id}"
       puts "Status: #{order.fulfillment_status}"
