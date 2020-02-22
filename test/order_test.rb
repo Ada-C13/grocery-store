@@ -143,7 +143,7 @@ describe "Order Wave 1" do
 end
 
 # TODO: change 'xdescribe' to 'describe' to run these tests
-xdescribe "Order Wave 2" do
+describe "Order Wave 2" do
   describe "Order.all" do
     it "Returns an array of all orders" do
       orders = Order.all
@@ -219,4 +219,26 @@ xdescribe "Order Wave 2" do
       expect(Order.find(53145)).must_be_nil
     end
   end
+
+  describe "Order.find_by_customer" do
+    it "Can find the customer orders from the CSV" do
+      first = Order.find_by_customer(10)
+      number_of_orders = 4
+
+      expect(first).must_be_kind_of Array
+      expect(first.length).must_equal 4
+    end
+
+    it "Can find the last customer orders from the CSV" do
+      last = Order.find_by_customer(35)
+
+      expect(last).must_be_kind_of Array
+      expect(last[0].fulfillment_status).must_equal :paid
+    end
+
+    it "Returns nil for a customer that doesn't exist" do
+      expect(Order.find_by_customer(53145)).must_be_nil
+    end
+  end
+
 end
