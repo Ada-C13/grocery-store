@@ -49,5 +49,13 @@ class Order
       Order.new(id, products, customer, fulfillment_status)
     end
   end
+
+  def self.find(id)
+    orders = self.all
+    orders.each do |order|
+      return order if order.id == id
+    end
+    return nil
+  end
 end
 

@@ -1,6 +1,4 @@
 require 'csv'
-require 'awesome_print'
-require_relative './order'
 
 class Customer
   attr_reader :id
@@ -28,10 +26,8 @@ class Customer
 
   def self.find(id)
     customers = self.all
-    customers.each do |cust|
-      if cust.id == id
-        return cust
-      end
+    customers.each do |cust| 
+      return cust if cust.id == id
     end
     return nil
   end
