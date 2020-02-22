@@ -21,7 +21,7 @@ class Order
 
   def total
     sum = 0
-    @products.each do |product_name, product_price|
+    @products.each do |_product_name, product_price|
       sum += product_price
     end
     sum = (sum + (sum * 0.075).round(2))

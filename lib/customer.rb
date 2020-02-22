@@ -1,3 +1,4 @@
+
 require_relative 'order.rb'
 require 'csv'
 require 'awesome_print'
@@ -21,18 +22,16 @@ class Customer
       city = customer[3]
       state = customer[4]
       zip = customer[5]
-      customer_record = Customer.new(id,email,{:street=> street, :city => city, :state => state, :zip => zip})
+      customer_record = Customer.new(id, email, { street: street, city: city, state: state, zip: zip })
     end
-    return list
+    list
   end
 
   def self.find(id)
     list_of_customers = Customer.all
-    list_of_customers.each do|customer|
-      if customer.id == id 
-        return customer
-      end
-    end 
-    return nil
+    list_of_customers.each do |customer|
+      return customer if customer.id == id
+    end
+    nil
   end
 end
