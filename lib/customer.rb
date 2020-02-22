@@ -12,29 +12,34 @@ class Customer
     @address = address
   end
 
+  # Class Method: returns an array of all the customer instances from the CSV file. loads the data when this class method is called
   def self.all
     customer_data = []
-    customers = CSV.read("./data/customers.csv")
+    customers = CSV.read("./data/customers.csv") #relative path based on rake file/ running file
     customers.each do |customer|
-      read_address = {}
-      read_id = customer[0].to_i
-      read_email = customer[1]
-      read_address[:street] = customer[2]
-      read_address[:city] = customer[3]
-      read_address[:state] = customer[4]
-      read_address[:zip] = customer[5] 
-      customer_data << Customer.new(read_id, read_email, read_address)
-    end
+      customer_data << Customer.new(customer[0].to_i, customer[1], {:street => customer[2], :city => customer[3], :state => customer[4], :zip => customer[5]})
+    end   
+    
     return customer_data
   end
 
+  # Class Method: find customer instance via customer id
   def self.find(id)
     self.all.each do |customer|
       if customer.id == id
         return customer
       end
     end
+
     return nil
   end
 
+  # Class Method: write new customer instance into a CSV file
+  def self.save(filename, new_customer) #filename could be "./data/new_customer_list.csv"
+    CSV.open(filename, "a") do |csv|
+      csv << [new_customer.id.to_s, new_customer.email, new_customer.address[:street], new_customer.address[:city],new_customer.address[:state], new_customer.address[:zip]]
+    end
+
+    return true
+  end
 end

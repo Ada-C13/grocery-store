@@ -1,3 +1,4 @@
+require "csv"
 require_relative "customer"
 
 # class definition for Order
@@ -6,14 +7,15 @@ class Order
   attr_accessor :products, :customer, :fulfillment_status
   
   def initialize(id, products, customer, fulfillment_status = :pending)
+    valid_status = [:pending, :paid, :processing, :shipped, :complete]
+    raise ArgumentError, "Invalid fulfillment status given." if (valid_status.include?(fulfillment_status) == false)
+    @fulfillment_status = fulfillment_status
     @id = id
     @products = products
     @customer = customer
-    @fulfillment_status = fulfillment_status
-    valid_status = [:pending, :paid, :processing, :shipped, :complete]
-    raise ArgumentError, "This is invalid" if (valid_status.include?(@fulfillment_status) == false)
   end
 
+  # calculates total cost of the order plus tax
   def total
     tax = 0.075
     prices = products.values.sum
@@ -21,41 +23,42 @@ class Order
     return grand_total
   end
 
+  # adds new product to the order
   def add_product(name, price)
-    raise ArgumentError if products.key?(name)
+    raise ArgumentError, "This product already exists." if products.key?(name)
     products[name] = price
   end
 
+  # removes existing product from the order
   def remove_product(name)
-    raise ArgumentError if !products.key?(name)
+    raise ArgumentError, "Product is not found in this order." if !products.key?(name)
     products.delete(name)
   end
 
+  # Class Method: returns an array of all the order instances from the CSV file. loads the data when called
   def self.all
     all_orders = []
     csv_orders = CSV.read("./data/orders.csv")
     csv_orders.each do |order|
-      id_read = order[0].to_i
-      fulfillment_status_read = order[3].to_sym
-      cust_id = order[2].to_i
-      customer_read = Customer.find(cust_id)
-      products_read = {}
+      id = order[0].to_i
+      fulfillment_status = order[3].to_sym
+      customer_instance = Customer.find(order[2].to_i)
+      products = {}
 
-      all_products = order[1]
-      split_products = all_products.split(";")
-      split_products.each do |string|
-        strings_array = string.split(":")
-        name = strings_array[0]
-        price = strings_array[1].to_f
-        products_read[name] = price
+      all_products = order[1].split(";")
+      all_products.each do |pair|
+        pairs_array = pair.split(":")
+        name = pairs_array[0]
+        price = pairs_array[1].to_f
+        products[name] = price
       end
-      each_order = Order.new(id_read, products_read, customer_read,fulfillment_status_read)
-      all_orders << each_order
+      all_orders << Order.new(id, products, customer_instance,fulfillment_status)
     end
 
     return all_orders
   end
 
+  # Class Method: finds order instance by order id
   def self.find(id)
     self.all.each do |order|
       if order.id == id
@@ -65,11 +68,11 @@ class Order
     return nil
   end
 
-  def Order.find_by_customer(customer_id)
+  # Class Method: find all orders from a customer with customer id
+  def self.find_by_customer(customer_id)
     orders_per_customer = []
-    customer_instance = Customer.find(customer_id)
     self.all.each do |order|
-      if order.customer == customer_instance
+      if order.customer.id == customer_id
         orders_per_customer << order
       end
     end

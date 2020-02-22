@@ -121,6 +121,16 @@ describe "Order Wave 1" do
       expect(order.products.include?("banana")).must_equal false
     end
 
+    it "Increases the number of products" do
+      products = { "banana" => 1.99, "cracker" => 3.00 }
+      before_count = products.count
+      order = Order.new(1337, products, customer)
+
+      order.remove_product("banana")
+      expected_count = before_count - 1
+      expect(order.products.count).must_equal expected_count
+    end
+
     it "raises ArgumentError if the product wanted to remove is not in the order" do
       products = { "banana" => 1.99, "cracker" => 3.00 }
       order = Order.new(5678, products, customer)
