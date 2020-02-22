@@ -1,3 +1,7 @@
+require "awesome_print"
+require "csv"
+require_relative "customer"
+
 class Order
   attr_reader :id
   attr_accessor :products, :fulfillment_status, :customer
@@ -9,6 +13,31 @@ class Order
     @fulfillment_status = fulfillment_status
     unless @fulfillment_status == :pending || @fulfillment_status == :paid || @fulfillment_status == :processing || @fulfillment_status == :shipped || @fulfillment_status == :complete
       raise ArgumentError, "The status is invalid"
+    end
+  end
+
+  def self.all
+    orders_collection = []
+    CSV.read("data/orders.csv").each do |order|
+      list_of_products = []
+      products_array = []  
+      order[1].split(';').each do |product_and_price|
+        products_array = product_and_price.split(':')
+        list_of_products << products_array
+      end
+      @products = list_of_products.reduce({}) do |hash, pair_array|
+        hash[pair_array[0]] = pair_array[1].to_f
+        hash
+      end
+      order_object = Order.new(order[0].to_i, @products, Customer.find(order[2].to_i), order[3].to_sym)
+      orders_collection << order_object
+    end
+    return orders_collection
+  end
+
+  def self.find(id)
+    Order.all.find do |order|
+      order.id == id
     end
   end
 
