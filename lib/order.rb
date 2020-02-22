@@ -75,5 +75,9 @@ class Order
     return all_orders
   end
 
+  def self.find(id)
+    return Order.all.select { |c| c.id == id }.first
+  end
+
 end
 
