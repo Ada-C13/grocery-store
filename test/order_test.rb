@@ -113,7 +113,6 @@ describe "Order Wave 1" do
   end
 end
 
-# TODO: change 'xdescribe' to 'describe' to run these tests
 describe "Order Wave 2" do
   describe "Order.all" do
     it "Returns an array of all orders" do
@@ -127,7 +126,7 @@ describe "Order Wave 2" do
         expect(o.id).must_be_kind_of Integer
         expect(o.products).must_be_kind_of Hash
         expect(o.customer).must_be_kind_of Customer
-        expect(o.fulfillment_status).must_be_kind_of Key
+        expect(o.fulfillment_status).must_be_kind_of Symbol
       end
     end
 
@@ -193,4 +192,5 @@ describe "Order Wave 2" do
       expect(Order.find(101)).must_be_nil
     end
   end
+
 end
