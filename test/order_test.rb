@@ -194,7 +194,6 @@ describe "Order Wave 2" do
 
   describe "Order.find" do
     it "Can find the first order from the CSV" do
-      # TODO: Your test code here!
       first = Order.find(1)
 
       expect(first).must_be_kind_of Order
@@ -202,7 +201,6 @@ describe "Order Wave 2" do
     end
 
     it "Can find the last order from the CSV" do
-      # TODO: Your test code here!
       last = Order.find(100)
 
       expect(last).must_be_kind_of Order
@@ -210,9 +208,29 @@ describe "Order Wave 2" do
     end
 
     it "Returns nil for an order that doesn't exist" do
-      # TODO: Your test code here!
       not_in_order = Order.find(101)
       expect(not_in_order).must_equal nil
     end
   end
+
+  describe "Order.find_by_customer" do 
+    it "Return Order record where customer id matches" do 
+      id = 6
+      products = {"Peaches" => 46.34}
+      customer_id = 14
+      fulfillment_status = :pending
+
+      order = Order.find_by_customer(14)
+      expect(order.id).must_equal id
+      expect(order.products).must_equal products
+      expect(order.customer.id).must_equal customer_id
+      expect(order.fulfillment_status).must_equal fulfillment_status
+    end 
+
+    it "Returns nil for an customer id doesn't exist" do
+      not_in_order = Order.find_by_customer(101)
+      expect(not_in_order).must_equal nil
+    end
+
+  end 
 end

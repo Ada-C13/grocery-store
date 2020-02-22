@@ -65,4 +65,14 @@ class Order
     return nil
   end 
 
+  def self.find_by_customer(customer_id)
+    data = Order.all
+    data.each do |array|
+      if array.customer.id == customer_id
+        return array
+      end 
+    end 
+    return nil
+  end 
+
 end
