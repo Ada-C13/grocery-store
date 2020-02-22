@@ -20,20 +20,15 @@ class Customer
     end
     return customers
   end
-  #return customers
 
   def self.find(id)
-    found_customer = nil
-    customers = Customer.all
+    customers = self.all
     customers.each do |customer|
       if customer.id == id
-        found_customer = customer
-        break
-      else 
-        found_customer = nil
+        return customer
       end
-      return found_customer
     end
+    return nil
   end
 end
 
