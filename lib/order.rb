@@ -55,4 +55,14 @@ class Order
     return list
   end 
 
+  def self.find(id)
+    data = Order.all
+    data.each do |array|
+      if array.id == id
+        return array
+      end 
+    end 
+    return nil
+  end 
+
 end
