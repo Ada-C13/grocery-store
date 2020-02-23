@@ -243,5 +243,4 @@ describe "Order Wave 2 Optional" do
       expect(found_by_customer.length).must_equal 3
     end
   end
-
 end
