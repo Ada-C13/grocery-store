@@ -1,8 +1,7 @@
 
-#
 require 'csv'
 
-#
+# Class that holds customer information
 class Customer
   attr_reader :id
   attr_accessor :email, :address
@@ -13,7 +12,7 @@ class Customer
     @address = delivery_address
   end
   
-  # 
+  # Load data in CSV to Customer class
   def self.all
     file = CSV.read('data/customers.csv').map(&:to_a)
     
@@ -24,14 +23,14 @@ class Customer
     end
   end
   
-  # 
+  # Find Customer object if customer id is available
   def self.find(id)
     all_customers = Customer.all
 
     all_customers.find { |customer| customer.id == id }
   end
   
-  # 
+  # Save customer into CSV file
   def self.save(filename)
     all_customers = Customer.all
     
@@ -39,6 +38,7 @@ class Customer
       all_customers.each do |customer|
         file << [customer.id, customer.email, customer.address[:street], customer.address[:city], customer.address[:state], customer.address[:zip]]
       end
+      return true
     end
   end
 end
