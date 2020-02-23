@@ -6,17 +6,21 @@
 # 
 require 'csv'
 
+# Create a Class Customer
 class Customer
 
+  # Generator
   attr_reader   :id
   attr_accessor :email, :address
 
+  # Constructor
   def initialize(id, email, address)
     @id = id
     @email = email
     @address = address
   end
 
+  # Class Method to read from a CSV file and return an array of customers
   def self.all
     filename      = "data/customers.csv"
     csv_all       = CSV.read(filename)
@@ -30,15 +34,16 @@ class Customer
 
       customer = Customer.new(id, email, address)
       all_customers << customer
-
     end
     return all_customers
   end
 
+  # Class Method to find a customer by the customer id
   def self.find(id)
     return Customer.all.select { |c| c.id == id }.first
   end
 
+  # Class Method save customer info to a CSV file
   def self.save(filename, new_customer)
     CSV.open(filename, "w") do |csv|
       csv << [new_customer.id,
