@@ -79,6 +79,8 @@ class Order
       end
     end
 
+    return nil if orders_per_customer.empty?
+
     return orders_per_customer
   end
 end

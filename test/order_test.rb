@@ -121,7 +121,7 @@ describe "Order Wave 1" do
       expect(order.products.include?("banana")).must_equal false
     end
 
-    it "Increases the number of products" do
+    it "Decreases the number of products" do
       products = { "banana" => 1.99, "cracker" => 3.00 }
       before_count = products.count
       order = Order.new(1337, products, customer)
@@ -135,9 +135,7 @@ describe "Order Wave 1" do
       products = { "banana" => 1.99, "cracker" => 3.00 }
       order = Order.new(5678, products, customer)
 
-      expect{
-        order.remove_product("icecream")
-      }.must_raise ArgumentError
+      expect{order.remove_product("icecream")}.must_raise ArgumentError
     end
   end
 end
@@ -227,8 +225,8 @@ describe "Order Wave 2" do
         expect(order).must_be_instance_of Order
       end
     end
-    it "Returns empty array if the customer id is not found" do
-      expect(Order.find_by_customer(9999999999)).must_equal []
+    it "Returns nil if the customer id is not found" do
+      expect(Order.find_by_customer(9999999999)).must_be_nil
     end
   end
 end
