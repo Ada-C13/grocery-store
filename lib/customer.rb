@@ -1,7 +1,6 @@
 require "csv"
 require_relative "order"
 
-# class definition for Customer
 class Customer
   attr_accessor :email, :address
   attr_reader :id
@@ -14,13 +13,11 @@ class Customer
 
   # Class Method: returns an array of all the customer instances from the CSV file. loads the data when this class method is called
   def self.all
-    customer_data = []
-    customers = CSV.read("./data/customers.csv") #relative path based on rake file/ running file
-    customers.each do |customer|
-      customer_data << Customer.new(customer[0].to_i, customer[1], {:street => customer[2], :city => customer[3], :state => customer[4], :zip => customer[5]})
+    instances_array = CSV.read("./data/customers.csv").map do |row| #relative path based on rake file/ running file
+      Customer.new(row[0].to_i, row[1], {:street => row[2], :city => row[3], :state => row[4], :zip => row[5]})
     end   
     
-    return customer_data
+    return instances_array
   end
 
   # Class Method: find customer instance via customer id

@@ -1,14 +1,13 @@
 require "csv"
 require_relative "customer"
 
-# class definition for Order
 class Order
   attr_reader :id
   attr_accessor :products, :customer, :fulfillment_status
   
   def initialize(id, products, customer, fulfillment_status = :pending)
     valid_status = [:pending, :paid, :processing, :shipped, :complete]
-    raise ArgumentError, "Invalid fulfillment status given." if (valid_status.include?(fulfillment_status) == false)
+    raise ArgumentError, "Invalid fulfillment status given." if !valid_status.include?(fulfillment_status)
     @fulfillment_status = fulfillment_status
     @id = id
     @products = products
@@ -52,6 +51,7 @@ class Order
         price = pairs_array[1].to_f
         products[name] = price
       end
+
       all_orders << Order.new(id, products, customer_instance,fulfillment_status)
     end
 
@@ -65,17 +65,20 @@ class Order
         return order
       end
     end
+
     return nil
   end
 
   # Class Method: find all orders from a customer with customer id
   def self.find_by_customer(customer_id)
     orders_per_customer = []
+
     self.all.each do |order|
       if order.customer.id == customer_id
         orders_per_customer << order
       end
     end
+
     return orders_per_customer
   end
 end
