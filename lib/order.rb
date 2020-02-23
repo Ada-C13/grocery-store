@@ -1,6 +1,5 @@
 require_relative 'customer'
 require 'csv'
-require 'ap'
 
 class Order
   attr_reader :id
@@ -38,15 +37,20 @@ class Order
     @products.delete(name)
   end
 
+  def self.get_products(string)
+    products = {}
+    string.split(";").each do |product|
+      name_price = product.split(":")
+      products[name_price[0]] = name_price[1].to_f
+    end
+    return products
+  end
+
   def self.all
     all_orders = []
     orders = CSV.read('data/orders.csv')
     orders.each do |order|
-      products = {}
-      order[1].split(";").each do |product|
-        name_price = product.split(":")
-        products[name_price[0]] = name_price[1].to_f
-      end
+      products = get_products(order[1])
       all_orders << Order.new(order[0].to_i, products, Customer.find(order[2].to_i), order[3].to_sym)
     end
     return all_orders
