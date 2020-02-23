@@ -6,8 +6,8 @@ class Order
 
   def initialize(id, products, customer, fulfillment_status = :pending)
     @id = id
-    @products = products
-    @customer = customer
+    @products = products #hash
+    @customer = customer #instance of Customer
     valid_statuses = [:pending, :paid, :processing, :shipped, :complete]
     if !valid_statuses.include? fulfillment_status
       raise ArgumentError.new("Invalid status")
@@ -32,6 +32,14 @@ class Order
     end
 
     @products[product_name] = price
+  end
+
+  def remove_product(product_name)
+    if @products.has_key?(product_name)
+      @products.delete(product_name)
+    else
+      raise ArgumentError.new("Product was not found")
+    end
   end
 
   def self.all
@@ -70,4 +78,5 @@ class Order
 
     return nil
   end
+
 end

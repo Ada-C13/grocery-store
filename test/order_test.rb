@@ -192,3 +192,49 @@ describe "Order Wave 2" do
     end
   end
 
+
+describe "Order Wave 1 Optional" do
+  let(:customer) do
+    address = {
+      street: "123 Main",
+      city: "Seattle",
+      state: "WA",
+      zip: "98101"
+    }
+    Customer.new(111, "b@b.co", address)
+  end
+
+  describe "#remove_product" do
+    it "Decreases the number of products" do
+      products = { "banana" => 1.99, "cracker" => 3.00, "apple" => 2.50 }
+      before_count = products.count
+      order = Order.new(1444, products, customer)
+
+      order.remove_product("apple")
+      expected_count = before_count - 1
+      expect(order.products.count).must_equal expected_count
+    end
+
+    it "Is removed from the collection of products" do
+      products = { "banana" => 1.99, "cracker" => 3.00, "apple" => 2.50 }
+      order = Order.new(1444, products, customer)
+
+      order.remove_product("apple")
+      expect(order.products.has_key?("apple")).must_equal false
+    end
+
+    it "Raises ArgumentError if the product was not found" do
+      products = { "banana" => 1.99, "cracker" => 3.00, "apple" => 2.50 }
+      order = Order.new(1444, products, customer)
+
+      expect {
+        order.remove_product("plum")
+      }.must_raise ArgumentError 
+    end
+  end
+end
+
+
+
+
+
