@@ -1,5 +1,6 @@
 require 'awesome_print'
 require 'csv'
+require 'pry'
 require_relative 'order'
 
 class Customer
@@ -33,5 +34,17 @@ class Customer
     Customer.all.find do |customer|
       customer.id == id
     end
+  end
+
+  def self.save(filename, new_customer)
+    street = new_customer.address[:street]
+    city = new_customer.address[:city]
+    state = new_customer.address[:state]
+    zip = new_customer.address[:zip]
+    customer_info = [new_customer.id, new_customer.email, street, city, state, zip]
+    CSV.open(filename, "a+") do |csv|
+      csv << customer_info
+    end
+  return true
   end
 end
