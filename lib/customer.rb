@@ -15,13 +15,15 @@ class Customer
   def self.all
     customers_list = []
     CSV.read("./data/customers.csv").each do |customer|
+      id = customer[0].to_i
+      email = customer[1]
       @address = {
         street: customer[2],
         city: customer[3],
         state: customer[4],
         zip: customer[5]
       }
-      client = Customer.new(customer[0].to_i, customer[1], @address)
+      client = Customer.new(id, email, @address)
       customers_list << client
     end
     return customers_list
