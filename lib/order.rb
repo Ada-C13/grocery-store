@@ -1,35 +1,36 @@
-require "awesome_print"
-require "csv"
-require_relative "customer"
+require 'awesome_print'
+require 'csv'
+require_relative 'customer'
 
 class Order
-  attr_reader :id
-  attr_accessor :products, :fulfillment_status, :customer
+  attr_reader :id, :customer, :products
+  attr_accessor :fulfillment_status
 
   def initialize(id, products, customer, fulfillment_status = :pending)
     @id = id #integer
     @products = products #hash
     @customer = customer #instance of customer
-    @fulfillment_status = fulfillment_status
-    unless @fulfillment_status == :pending || @fulfillment_status == :paid || @fulfillment_status == :processing || @fulfillment_status == :shipped || @fulfillment_status == :complete
+    status_options = [:pending, :paid, :processing, :shipped, :complete]
+    unless status_options.include? fulfillment_status
       raise ArgumentError, "The status is invalid"
     end
+    @fulfillment_status = fulfillment_status
   end
 
   def self.all
     orders_collection = []
     CSV.read("data/orders.csv").each do |order|
-      list_of_products = []
-      products_array = []  
+      products_per_order = []
       order[1].split(';').each do |product_and_price|
-        products_array = product_and_price.split(':')
-        list_of_products << products_array
+        product_and_price = product_and_price.split(':')
+        product_and_price[1] = product_and_price[1].to_f
+        products_per_order << product_and_price
       end
-      @products = list_of_products.reduce({}) do |hash, pair_array|
-        hash[pair_array[0]] = pair_array[1].to_f
-        hash
-      end
-      order_object = Order.new(order[0].to_i, @products, Customer.find(order[2].to_i), order[3].to_sym)
+      id = order.first.to_i
+      @products = products_per_order.to_h
+      customer = Customer.find(order[2].to_i)
+      fulfillment_status = order.last.to_sym
+      order_object = Order.new(id, @products, customer, fulfillment_status)
       orders_collection << order_object
     end
     return orders_collection
@@ -42,29 +43,24 @@ class Order
   end
 
   def total
-    price = 0
-    @products.each do |product, cost|
-      price += cost
-    end
-      price *= 1.075
+    price = @products.sum { |product, cost| cost }
+    price *= 1.075
     return price.round(2)
   end
 
   def add_product(product_name, price)
     if @products.keys.include? product_name
       raise ArgumentError, "Such product already exists in the list"
-    else
-      @products[product_name] = price
     end
+    @products[product_name] = price
     return @products
   end
 
   def remove(product_name)
     unless @products.keys.include? product_name
       raise ArgumentError, "There is no such product in the list"
-    else
-      @products.delete(product_name)
     end
+    @products.delete(product_name)
     return @products
   end
 end
