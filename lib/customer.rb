@@ -1,6 +1,6 @@
-require "awesome_print"
-require "csv"
-require_relative "order"
+require 'awesome_print'
+require 'csv'
+require_relative 'order'
 
 class Customer
   attr_reader :id
@@ -16,10 +16,10 @@ class Customer
     customers_list = []
     CSV.read("./data/customers.csv").each do |customer|
       @address = {
-      street: customer[2],
-      city: customer[3],
-      state: customer[4],
-      zip: customer[5]
+        street: customer[2],
+        city: customer[3],
+        state: customer[4],
+        zip: customer[5]
       }
       client = Customer.new(customer[0].to_i, customer[1], @address)
       customers_list << client
