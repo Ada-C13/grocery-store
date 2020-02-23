@@ -196,3 +196,28 @@ describe "Order Wave 2" do
       expect(Order.find(53145)).must_be_nil
     end
   end
+  
+describe "Order Wave 3" do
+  describe "Order.find_by_customer" do
+    it "Returns accurate information about a given customer" do
+      #Note, this includes both single orders and multiple
+      customer_id = 8
+      customer_orders_multiple = [Order.all[14], Order.all[62]]
+      customer_output_multiple = Order.find_by_customer(customer_id)
+
+      customer_id_2 = 1
+      customer_orders_single = [Order.all[18]]
+      customer_output_single = Order.find_by_customer(customer_id_2)
+
+      expect(customer_output_multiple).equal?(customer_orders_multiple)
+      expect(customer_output_single).equal?(customer_orders_single)
+    end
+
+    it "Returns an error of no customer is found" do
+      customer_id = 200
+      response = "That customer has not made any orders"
+
+      expect(Order.find_by_customer(customer_id)).must_equal response
+    end
+  end
+end
