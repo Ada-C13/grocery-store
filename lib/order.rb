@@ -1,3 +1,5 @@
+require 'csv'
+
 class Order
   attr_reader :id, :customer
   attr_accessor :products, :fulfillment_status
@@ -50,8 +52,27 @@ class Order
     end
     return @products
   end
+
+  def self.all
+    file = 'data/orders.csv'
+    data = CSV.read(file)
+
+    orders = Array.new
+    for index in (0...data.length)
+      product = (data[index][1]).split(';')
+      @products = {}
+      product.each do |input|
+        k,v = input.split(':')
+        @products[k] = v.to_f
+      end
+    orders << Order.new(data[index][0].to_i, @products, Customer.find(data[index][-2].to_i), data[index].last.to_sym) 
+    end
+    return orders
+  end
+
 end
 
+# p Order.all.product
 # new_order = Order.new("123")
 # puts new_order.customer_info("dd")
 # puts new_order.fulfillment_status
