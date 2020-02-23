@@ -1,5 +1,6 @@
 require_relative 'customer'
 require 'csv'
+require 'ap'
 
 class Order
   attr_reader :id
@@ -61,6 +62,12 @@ class Order
       return nil
     end
     return Order.all[id-1]
+  end
+
+  def self.find_by_customer(customer_id)
+     orders = all.find_all {|order| 
+       order.customer.id == customer_id}
+    return orders
   end
 
 end
