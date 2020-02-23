@@ -9,9 +9,8 @@ class Customer
     @address = address
   end
 
-
-  # returns a collection of Customer instances, 
-  # representing all of the Customer described in the CSV file
+  # Wave 2
+  # Method that returns a collection of Customer instances
   def self.all
     customers_csv = CSV.read("./data/customers.csv")
 
@@ -25,11 +24,10 @@ class Customer
     end
 
     return customers
-
   end
-
-  # returns an instance of Customer where the value of the 
-  # id field in the CSV matches the passed parameter
+  
+  # Method that returns an instance of Customer 
+  # when id given is found in CSV 
   def self.find(id)
     customers = Customer.all
     found_customer = customers.detect {|customer| (customer.id) == id}
