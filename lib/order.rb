@@ -76,7 +76,11 @@ class Order
   end
 
   def self.find(id)
-    return Order.all.select { |c| c.id == id }.first
+    return Order.all.select { |o| o.id == id }.first
+  end
+
+  def self.find_by_customer(customer_id)
+    return Order.all.select { |o| o.customer.id == customer_id }
   end
 
 end
