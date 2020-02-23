@@ -38,8 +38,11 @@ describe "Customer Wave 2" do
   describe "Customer.all" do
     it "Returns an array of all customers" do
       customers = Customer.all
+      num_of_customers = CSV.read("data/customers.csv").length
 
-      expect(customers.length).must_equal 35
+      # Changed from 35 to "actual number of customers" from CSV since I added "Customer.save" method
+      expect(customers.length).must_equal num_of_customers
+
       customers.each do |c|
         expect(c).must_be_kind_of Customer
 
@@ -60,15 +63,16 @@ describe "Customer Wave 2" do
       expect(first.address[:zip]).must_equal "98872-9105"
     end
 
-    it "Returns accurate information about the last customer" do
-      last = Customer.all.last
+    it "Returns accurate information about the 35th customer" do
+      # used "35th row" instead of the "last row", since I added "Customer.save" method. 
+      thirty_fifth_row = Customer.all[34]
 
-      expect(last.id).must_equal 35
-      expect(last.email).must_equal "rogers_koelpin@oconnell.org"
-      expect(last.address[:street]).must_equal '7513 Kaylee Summit'
-      expect(last.address[:city]).must_equal 'Uptonhaven'
-      expect(last.address[:state]).must_equal 'DE'
-      expect(last.address[:zip]).must_equal '64529-2614'
+      expect(thirty_fifth_row.id).must_equal 35
+      expect(thirty_fifth_row.email).must_equal "rogers_koelpin@oconnell.org"
+      expect(thirty_fifth_row.address[:street]).must_equal '7513 Kaylee Summit'
+      expect(thirty_fifth_row.address[:city]).must_equal 'Uptonhaven'
+      expect(thirty_fifth_row.address[:state]).must_equal 'DE'
+      expect(thirty_fifth_row.address[:zip]).must_equal '64529-2614'
     end
   end
 
