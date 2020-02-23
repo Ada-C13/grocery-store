@@ -4,7 +4,7 @@ require "awesome_print"
 # create a customer class
 class Customer
   attr_reader :id
-  attr_accessor :email, :address
+  attr_accessor :email, :address # how do we know ???
 
   def initialize(id, email, address) # The initialize creates customer list
     @id = id

@@ -108,7 +108,7 @@ describe "Order Wave 1" do
           order.add_product("banana", 4.25)
         }.must_raise ArgumentError
 
-        # The list of products should not have been modified
+        # the list of products should not have been modified
         expect(order.total).must_equal before_total
       end
     end
@@ -117,7 +117,7 @@ describe "Order Wave 1" do
       it "decreases the number of products" do
         products = { "banana" => 1.99, "cracker" => 3.00 }
         before_count = products.count
-        order = Order.new(1337, products, customer)
+        order = Order.new(1563, products, customer)
 
         result = order.remove_product("banana")
         expected_count = before_count - 1
@@ -126,7 +126,7 @@ describe "Order Wave 1" do
 
       it "Is removed from the collection of products" do
         products = { "banana" => 1.99, "cracker" => 3.00 }
-        order = Order.new(1337, products, customer)
+        order = Order.new(1563, products, customer)
 
         shopping_bag = order.remove_product("banana")
         expect(order.products.include?("banana")).must_equal false
@@ -135,7 +135,7 @@ describe "Order Wave 1" do
       it "Raises an ArgumentError if the product does not already exist" do
         products = { "banana" => 1.99, "cracker" => 3.00 }
 
-        order = Order.new(1337, products, customer)
+        order = Order.new(1563, products, customer)
         before_total = order.total
 
         expect {
@@ -147,10 +147,10 @@ describe "Order Wave 1" do
     end
   end
 
-  # TODO: change 'xdescribe' to 'describe' to run these tests
+  # wave 2
   describe "Order.all" do
     it "Returns an array of all orders" do
-      # TODO: Your test code here!
+      # test code for all orders and returning them in an array
       orders = Order.all
 
       expect(orders.length).must_equal 100
@@ -161,6 +161,7 @@ describe "Order Wave 1" do
     end
 
     it "Returns accurate information about the first order" do
+      # test code for first order
       id = 1
       products = {
         "Lobster" => 17.18,
@@ -169,7 +170,6 @@ describe "Order Wave 1" do
       }
       customer_id = 25
       fulfillment_status = :complete
-
       order = Order.all.first
 
       # Check that all data was loaded as expected
@@ -181,7 +181,7 @@ describe "Order Wave 1" do
     end
 
     it "Returns accurate information about the last order" do
-      # TODO: Your test code here!
+      # test code for last order
       id = 100
       products = {
         "Amaranth" => 83.81,
@@ -190,9 +190,8 @@ describe "Order Wave 1" do
       }
       customer_id = 20
       fulfillment_status = :pending
-
       order = Order.all.last
-
+    
       # Check that all data was loaded as expected
       expect(order.id).must_equal id
       expect(order.products).must_equal products
@@ -204,22 +203,22 @@ describe "Order Wave 1" do
 
   describe "Order.find" do
     it "Can find the first order from the CSV" do
-      # TODO: Your test code here!
+      # test code to finding the first order from CSV
       first = Order.find(1)
       expect(first).must_be_kind_of Order
       expect(first.id).must_equal 1
     end
 
     it "Can find the last order from the CSV" do
-      # TODO: Your test code here!
+      # test code to finding the last order from CSV
       last = Order.find(35)
       expect(last).must_be_kind_of Order
       expect(last.id).must_equal 35
     end
 
     it "Returns nil for an order that doesn't exist" do
-      # TODO: Your test code here!
-      expect(Order.find(1000)).must_be_nil
+      # test code for orde that doesn't exist
+      expect(Order.find(999)).must_be_nil
     end
   end
 end
