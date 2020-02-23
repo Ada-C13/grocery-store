@@ -1,6 +1,7 @@
 require 'minitest/autorun'
 require 'minitest/reporters'
 require 'minitest/skip_dsl'
+require 'CSV'
 
 require_relative '../lib/customer'
 require_relative '../lib/order'
@@ -174,16 +175,26 @@ describe "Order Wave 2" do
   end
 
   describe "Order.find" do
+    let (:filename) do
+      './data/orders.csv'
+    end
+
     it "Can find the first order from the CSV" do
-      # TODO: Your test code here!
+      first_order = CSV.read(filename).first
+
+      expect(Order.find(first_order)).must_equal first_order
     end
 
     it "Can find the last order from the CSV" do
-      # TODO: Your test code here!
+      last_order = CSV.read(filename).last
+
+      expect(Order.find(last_order)).must_equal last_order
     end
 
     it "Returns nil for an order that doesn't exist" do
-      # TODO: Your test code here!
+      bogus_order = ["5", "Lettuce:37.94;Rice paper:23.93;Flaxseed:23.67", "53", "pending"]
+
+      expect(Order.find(bogus_order)).assert_nil result
     end
   end
 end
