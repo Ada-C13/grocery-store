@@ -235,6 +235,58 @@ describe "Order Wave 1 Optional" do
 end
 
 
+describe "Order Wave 2 Optional" do
+  describe "Order.find_by_customer" do
+    it "returns a list of Order instances" do
+      found_by_customer = Order.find_by_customer(24)
+
+      expect(found_by_customer).must_be_kind_of Array
+      expect(found_by_customer[0]).must_be_kind_of Object
+      expect(found_by_customer.length).must_equal 3
+    end
+  end
+
+end
 
 
 
+
+
+
+
+# describe "Order.all" do
+#     it "Returns an array of all orders" do
+#       orders = Order.all
+
+#       expect(orders.length).must_equal 100
+#       orders.each do |order|
+#         expect(order).must_be_kind_of Order
+
+#         expect(order.id).must_be_kind_of Integer
+#         expect(order.products).must_be_kind_of Hash
+#         expect(order.customer).must_be_kind_of Object
+#         expect(order.fulfillment_status).must_be_kind_of Symbol
+#       end
+#     end
+
+
+
+# describe "Order.find" do
+#   it "Can find the first order from the CSV" do
+#     first = Order.find(1)
+
+#     expect(first).must_be_kind_of Order
+#     expect(first.id).must_equal 1
+#   end
+
+#   it "Can find the last order from the CSV" do
+#     last = Order.find(100)
+
+#     expect(last).must_be_kind_of Order
+#     expect(last.id).must_equal 100
+#   end
+
+#   it "Returns nil for an order that doesn't exist" do
+#     expect(Order.find(1234)).must_be_nil
+#   end
+# end

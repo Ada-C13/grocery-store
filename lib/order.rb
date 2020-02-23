@@ -67,7 +67,6 @@ class Order
     return orders
   end
 
-
   def self.find(id)
     orders = Order.all
     orders.each do |order_object|
@@ -79,4 +78,12 @@ class Order
     return nil
   end
 
+  def self.find_by_customer(customer_id)
+    orders = Order.all
+    found_by_customer = orders.select do |order_object|
+      order_object.customer.id == customer_id
+    end
+
+    return found_by_customer
+  end
 end
