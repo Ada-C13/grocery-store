@@ -1,16 +1,17 @@
 require 'csv'
 require_relative 'customer'
 
+# Add constants 
+STATUSES = [:pending, :paid, :processing, :shipped, :complete]
+
 class Order 
 
   attr_reader :id, :products, :customer, :fulfillment_status
 
   def initialize(id, products, customer, fulfillment_status = :pending)
 
-    statuses = [:pending, :paid, :processing, :shipped, :complete]
-
     # If status is not valid, raise an error
-    if !statuses.include?(fulfillment_status)
+    if !STATUSES.include?(fulfillment_status)
       raise ArgumentError.new("#{fulfillment_status} is not valid. Please enter a valid status.")
     end 
 
