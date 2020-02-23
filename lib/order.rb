@@ -95,13 +95,13 @@ class Order
   def self.find_by_customer(customer_id)
     order_instances = self.all 
 
-    found_by_customer_instances = order_instances.filter do |order_instance| 
+    order_instances_by_customer_id = order_instances.filter do |order_instance| 
       order_instance.customer.id == customer_id
     end 
 
-    return nil if found_by_customer_instances.empty?
+    return nil if order_instances_by_customer_id.empty?
 
     # Return a "list" of Order instances
-    return found_by_customer_instances
+    return order_instances_by_customer_id
   end 
 end 
