@@ -33,7 +33,6 @@ class Customer
   def self.find(id)
     customer_info = self.all
     customer_with_id = customer_info.find { |customer| customer.id == id}
-    raise ArgumentError.new("No customer with ID #{id} found.") if customer_with_id == nil 
     return customer_with_id
   end
 end
