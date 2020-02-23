@@ -27,6 +27,9 @@ class Customer
   end
 
   def self.find(id)
+    if id <= 0
+      return nil
+    end
     return Customer.all[id-1]
   end
 end
