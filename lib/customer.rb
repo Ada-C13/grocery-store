@@ -27,7 +27,7 @@ class Customer
       zip = customer[5]
       customer_info = Customer.new(id, email, { street: street, city: city, state: state, zip: zip })
     end
-    list
+    customer_info
   end
 
   def self.find(id)

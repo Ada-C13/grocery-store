@@ -21,7 +21,7 @@ class Order
 
   def total
     sum = 0
-    @products.each do |product_name, product_price|
+    @products.each do |_product_name, product_price|
       sum += product_price
     end
     sum = (sum + (sum * 0.075).round(2))
@@ -31,52 +31,49 @@ class Order
   def add_product(product_name, product_price)
     if products.key? product_name
       raise ArgumentError
-    else @products[product_name] =
-           product_price
-         true
+    elsif @products[product_name] =
+            product_price
+      true
     end
   end
 
-def self.all
-products_item = {}
-orders_info = orders.each do |order|
-  id = order[0].to_i
-  products = order[1].split(";")
-  products.each do |item|
-    product_name,product_price = item.split":"
-   products_item[product_name] = product_price
-   orders_info = Order.new(id,customer,products{product_name:product_name,product_price:product_price})
+  #  def self.products_to_string(csv_input)
+  #     products = {}
+  #     product_purchase = csv_input.split (";")
+  #     product_purchase.each do |item|
+  #      product_name, product_value = item.split ":"
+  #       products[product_name] = product_value
+  #     end
+  #     return products
 
-end 
+  #   end
+  def self.products_hash(str)
+    product_string = str.split(':')
+    product_string.map! do |element|
+      element.split(';')
+    end
+    product_hash = {}
+    product_string.each do |product_purchase|
+      product_hash[product_purchase[0]] = product_purchase[1]
+    end
+    product_purchase
+  end
+
+  def self.all
+    orders = []
+    CSV.read('./data/orders.csv').each do |order|
+      order_info = Order.new(order[0].to_i, Order.products_hash(order[1]), Customer.find(order[2].to_i), order[3].to_sym)
+      orders << order_info
+    end
+    orders
 end
-  # def self.all
-  #   orders = CSV.read('data/orders.csv')
-  #   orders_info = orders.map do |order|
-  #     id = order[0].to_i
-  #     products = order[1].split(";")
-  #     products.each do |product|
-  #       product_name = product.split(":")[0]
-  #       product_price = product.split(":")[1]
-  #       orders_info = Order.new(id,customer,products{product_name:[product_name,product_price:[product_price]})
-  #       end
-  #   end
-  # end
 
-  #  def self.all
-  #   orders = CSV.read('data/orders.csv')
-  #   orders_info = orders.map do |order|
-  #     id = customer[0].to_i
-  #     product = customer[1]
-  #     customer_id = customer[2]
-  #     status = customer[3]
-  #     orders_info = Order.new(product: product state, zip: zip })
-  #   end
-  #   list
-  # end
+  def self.find(id)
+    order_array = Order.all
 
-  # def self.find(id)
-  #   list_of_customers = Customer.all
-  #   list_of_customers.each do |customer|
-  #     return customer if customer.id == id
-  #   end
-  # end
+    order_array.each do |order|
+      return order if order.id == id
+    end
+    nil
+  end
+end
