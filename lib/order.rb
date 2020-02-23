@@ -1,3 +1,7 @@
+require_relative 'customer'
+require 'csv'
+require 'ap'
+
 class Order
   attr_reader :id
   attr_accessor :products, :customer, :fulfillment_status
@@ -32,6 +36,27 @@ class Order
       raise ArgumentError.new("That product is not in the order.")
     end
     @products.delete(name)
+  end
+
+  def self.all
+    all_orders = []
+    orders = CSV.read('data/orders.csv')
+    orders.each do |order|
+      products = {}
+      order[1].split(";").each do |product|
+        name_price = product.split(":")
+        products[name_price[0]] = name_price[1].to_f
+      end
+      all_orders << Order.new(order[0].to_i, products, Customer.find(order[2].to_i), order[3].to_sym)
+    end
+    return all_orders
+  end
+
+  def self.find(id)
+    if id <= 0
+      return nil
+    end
+    return Order.all[id-1]
   end
 
 end
