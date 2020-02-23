@@ -17,7 +17,6 @@ class Customer
       return
     end
     CSV.read('./data/customers.csv').each do |customer_info|
-
       customer_id = customer_info[0].to_i
       customer_email = "#{customer_info[1]}"
 
@@ -41,11 +40,8 @@ class Customer
     all_customers.each do |customer|
       if customer.id == id
         return customer
-      elsif 
-        nil
       end
     end
+    return nil
   end
 end
-
-Customer.find(1)
