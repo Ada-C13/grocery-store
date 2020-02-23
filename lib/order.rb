@@ -1,20 +1,30 @@
+require 'csv'
+
+
 
 class Order
   attr_reader :id
   attr_accessor :products, :customer, :fulfillment_status      
 
+  @@orders_collection = []
+
   def initialize(id, products, customer, fulfillment_status = :pending)     
     @id = id
-    @products = products ||= {}
+    @products = products #||= {}
     @customer = customer
     @fulfillment_status = fulfillment_status 
+
     approved_status = [:pending, :paid, :processing, :shipped, :complete]
     unless approved_status.include?(fulfillment_status)
       raise ArgumentError, 'You must provide one of the following statuses :pending, :paid, :processing, :shipped, :complete'
     end
-
-  
   end 
+
+  def self.order_data
+    CSV.read('./data/orders.csv').each do |order|
+      @@orders_collection << order
+    end
+  end
 
   def total
 
@@ -33,10 +43,19 @@ class Order
   
   end
 
+  def self.all
+    return @@orders_collection
 
+  end
+
+  def find(id)
+
+  end
 
 end
 
+
+Order.order_data
 
 
 
