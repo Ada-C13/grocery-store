@@ -1,5 +1,4 @@
 require 'csv'
-require 'ap'
 
 class Customer
   attr_reader :id
