@@ -2,31 +2,30 @@
 
 require_relative "customer.rb"
 
-  # helper method 
-  def convert_to_hash(string)
-    pairs = string.split(";")
-    pairs2 = pairs.map{ |pair| pair.split(":")}
-    pairs2.each do |pair|
-      pair[1] = pair[1].to_f
-    end 
-    return pairs2.to_h
-  end
+# helper method 
+def convert_to_hash(string)
+  pairs = string.split(";")
+  pairs2 = pairs.map{|pair| pair.split(":")}
+  pairs2.each do |pair|
+    pair[1] = pair[1].to_f
+  end 
+  return pairs2.to_h
+end
 
 class Order
 
   attr_accessor :products, :customer, :fulfillment_status 
   attr_reader :id
+
   VALID_STATUS = [:pending, :paid, :processing, :shipped, :complete]
 
   def initialize(id, products, customer, fulfillment_status = :pending)
     @id = id
     @products = products
     @customer = customer 
-
     if VALID_STATUS.include?(fulfillment_status) == false 
       raise ArgumentError.new("#{fulfillment_status} is an invalid fulfillment status.")
     end 
-
     @fulfillment_status = fulfillment_status 
   end 
 
@@ -46,10 +45,9 @@ class Order
     products[product_name] = price
   end
 
-
   def self.all
     all_orders = []
-    CSV.read("../data/orders.csv").each do |order|
+    CSV.read("data/orders.csv").each do |order|
       ordered_products = convert_to_hash(order[1])
       customer = Customer.find(order[2].to_i)
       unique_order = Order.new(order[0].to_i, ordered_products, customer, order[3].to_sym)
@@ -59,7 +57,13 @@ class Order
   end
 
   def self.find(id)
-
+    order_list = Order.all 
+    order_list.each do |order|
+      if order.id == id
+        return order
+      end 
+    end
+    return nil
   end 
 
 end 

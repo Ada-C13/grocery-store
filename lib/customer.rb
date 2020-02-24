@@ -15,7 +15,7 @@ class Customer
 
   def self.all
     all_customers = []
-    CSV.read("../data/customers.csv").each do |customer|
+    CSV.read("data/customers.csv").each do |customer|
       address = {street: customer[2], city: customer[3], state: customer[4], zip: customer[5]}
       unique_customer = Customer.new(customer[0].to_i, customer[1], address)
       all_customers << unique_customer
