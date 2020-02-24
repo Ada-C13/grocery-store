@@ -22,5 +22,13 @@ class Customer
   def self.find(id)
     return self.all[id - 1]
   end
+
+  # Optional wave 3
+  def self.save(filename, new_customer)
+    CSV.open(filename,'a') do |csv|
+      new_customer_data = [new_customer.id, new_customer.email, new_customer.address[:street], new_customer.address[:city], new_customer.address[:state], new_customer.address[:zip] ]
+      csv << new_customer_data
+    end
+  end
 end
 
