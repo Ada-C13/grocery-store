@@ -23,11 +23,11 @@ class Customer
     return customers
   end
 
-    def self.find(id)
-      return (self.all).bsearch { |customer| id <=> customer.id }
-    end
+  def self.find(id)
+    return (self.all).bsearch { |customer| id <=> customer.id }
+  end
       
-      
+      ### none of these worked to find self....whyyyyyy
       
       
       # def self.find(id)
@@ -67,4 +67,4 @@ class Customer
       #   }
       # end 
       
-    end 
+end 
