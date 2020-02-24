@@ -175,26 +175,40 @@ describe "Order Wave 2" do
   end
 
   describe "Order.find" do
-    let (:filename) do
-      './data/orders.csv'
-    end
-
     it "Can find the first order from the CSV" do
-      first_order = CSV.read(filename).first
+      products = {
+        "Lobster" => 17.18,
+        "Annatto seed" => 58.38,
+        "Camomile" => 83.21
+      }
 
-      expect(Order.find(first_order)).must_equal first_order
+      first = Order.find(1)
+
+      expect(first.id).must_equal 1
+      expect(first.products).must_equal products
+      expect(first.customer).must_equal 25
+      expect(first.fulfillment_status).must_equal :complete
     end
 
     it "Can find the last order from the CSV" do
-      last_order = CSV.read(filename).last
+      products = {
+        "Amaranth" => 83.81,
+        "Smoked Trout" => 70.6,
+        "Cheddar" => 5.63
+      }
+      
+      last = Order.find(100)
 
-      expect(Order.find(last_order)).must_equal last_order
+      expect(last.id).must_equal 100
+      expect(last.products).must_equal products
+      expect(last.customer).must_equal 20
+      expect(last.fulfillment_status).must_equal :pending
     end
 
     it "Returns nil for an order that doesn't exist" do
-      bogus_order = ["5", "Lettuce:37.94;Rice paper:23.93;Flaxseed:23.67", "53", "pending"]
-
-      expect(Order.find(bogus_order)).assert_nil result
+      bogus_order = Order.find(101)
+  
+      expect(bogus_order).assert_nil result
     end
   end
 end
