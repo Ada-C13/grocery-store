@@ -4,7 +4,7 @@ require "awesome_print"
 # create a customer class
 class Customer
   attr_reader :id
-  attr_accessor :email, :address 
+  attr_accessor :email, :address
 
   def initialize(id, email, address) # The initialize creates customer list
     @id = id
@@ -17,7 +17,7 @@ class Customer
     # returns a collection of Customer instances, representing all of the Customers described in the CSV file
     allcustomers = CSV.read("data/customers.csv").map(&:to_a)
     customers = []
-    # iterate through the allcustomers array 
+    # iterate through the allcustomers array
     allcustomers.each do |customer_data|
       # taking each customer and extracting id at index 0
       customers << Customer.new(customer_data[0].to_i, customer_data[1], customer_data[2..5]) # each customer object here will be an instance of that customers array
@@ -33,22 +33,23 @@ class Customer
 
       customer.address = address
     end
-    return customers    
+    return customers
   end
 
   # return an instance of Customer where the value of the id field in the CSV matches the passed parameter
   def self.find(id)
     Customer.all.find { |customer| customer.id == id }
   end
+
+  def self.save(filename, new_customer)
+    CSV.open(filename, "a") do |csv|
+      id = new_customer.id
+      email = new_customer.email
+      address = new_customer.address.values
+
+      new_customer_data = [id, email, *address]
+      csv << new_customer_data
+    end
+    return true
+  end
 end
-
-
-#  # wave 3
-#   def save(filename, new_customer)
-#     CSV.open("data/customers.csv", "a+") do |csv|
-#       csv << new_customer
-#     end
-#   end not finished
-
-# 1,leonard.rogahn@hagenes.org,71596 Eden Route,Connellymouth,LA,98872-9105
-

@@ -1,6 +1,6 @@
 class Order
-  # id is only reader
-  attr_reader :id, :products, :customer, :fulfillment_status
+  attr_reader :id
+  attr_accessor :products, :customer, :fulfillment_status
 
   def initialize(id, products, customer, fulfillment_status = :pending)
     status = [:pending, :paid, :processing, :shipped, :complete]
@@ -27,7 +27,6 @@ class Order
     return order_total
   end
 
-  ###########
   # add add_product method
   def add_product(product_name, price)
     if @products.key?(product_name)
