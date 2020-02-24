@@ -27,44 +27,4 @@ class Customer
     return (self.all).bsearch { |customer| id <=> customer.id }
   end
       
-      ### none of these worked to find self....whyyyyyy
-      
-      
-      # def self.find(id)
-      #  Customer.all.find do |customer|
-      #     if customer.include?(id)
-      #   return customer
-      #     end
-      # end
-      
-      #   result = sharks.find {|item| item.include?("a")}
-      # print result
-      
-      # def self.find(id)
-      #   Customer.all.each do |customer|
-      #     if id == customer.id
-      #       return customer
-      #     else
-      #       return nil
-      #     end
-      #   end
-      # end
-      
-      
-      
-      # elsif !(customer.id).include?(id)
-      #   return nil 
-      
-      
-      #returns instance of Customer where the value in the id field
-      #matches the passed parameter
-      
-      # def find_planet_by_name(input_planet)
-      #   @planets.each { |planet|
-      #     if input_planet.capitalize == planet.name
-      #       return planet 
-      #     end
-      #   }
-      # end 
-      
 end 

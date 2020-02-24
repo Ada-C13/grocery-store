@@ -11,13 +11,11 @@ class Order
     @products = products
     @customer = customer
     @fulfillment_status = fulfillment_status
-    # valid_statuses = %i[pending paid processing shipped complete]
-    # raise ArgumentError if !valid_statuses.include?(@fulfillment_status)
-
+   
     case fulfillment_status 
-    when :pending, :paid, :processing, :shipped, :complete
-      @fulfillment_status = fulfillment_status
-    else raise ArgumentError 
+      when :pending, :paid, :processing, :shipped, :complete
+        @fulfillment_status = fulfillment_status
+      else raise ArgumentError 
     end
   end
   
@@ -26,10 +24,8 @@ class Order
       return 0
     else
       total = @products.values.sum
-      # total = @products.values.reduce(:+)
       total = total * 1.075
       return total.round(2)
-      # return ('%.2f' % total).to_f
     end
   end
   
@@ -56,10 +52,10 @@ class Order
     order_csv = CSV.read("./data/orders.csv")
     orders = order_csv.map do |order_row|
       products = Order.parse_products(order_row[1])
-      Order.new(order_row[0], # order id
-        products, # products
-        Customer.find(order_row[2].to_i), # customer
-        order_row[3].to_sym) # fulfilment status 
+      Order.new(order_row[0], 
+        products, 
+        Customer.find(order_row[2].to_i), 
+        order_row[3].to_sym)  
       end
   return orders
   end 
@@ -68,14 +64,5 @@ class Order
     return (self.all).bsearch { |order| id <=> order.id}
   end
 
-  ###this does not work to return nil...why?
-  # def self.find(id)
-  #   Order.all.each do |order|
-  #     if id == order.id
-  #       return order
-  #     end
-  #   end
-  # end
-  
 end
 
