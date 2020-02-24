@@ -43,7 +43,7 @@ class Customer
     return Customer.all.select { |c| c.id == id }.first
   end
 
-  # Class Method save customer info to a CSV file
+  # Class Method to save customer info to a CSV file
   def self.save(filename, new_customer)
     CSV.open(filename, "w") do |csv|
       csv << [new_customer.id,
