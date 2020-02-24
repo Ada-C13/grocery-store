@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 
 require_relative 'customer.rb'
 require 'csv'
@@ -38,23 +37,23 @@ class Order
   end
 
   def self.products_hash(str)
-    product_string = str.split(";")
+    product_string = str.split(';')
     product_string.map! do |element|
       element.split(':')
     end
     product_hash = {}
     product_string.each do |product_purchase|
-      product_hash[product_purchase[0]]= product_purchase[1].to_f
+      product_hash[product_purchase[0]] = product_purchase[1].to_f
     end
-     product_hash
+    product_hash
   end
 
   def self.all
     orders = []
     CSV.read('./data/orders.csv').map do |order|
-       id = order[0].to_i
-       products = products_hash(order[1])
-       order_info = Order.new(id, products, Customer.find(order[2].to_i),order[3].to_sym)
+      id = order[0].to_i
+      products = products_hash(order[1])
+      order_info = Order.new(id, products, Customer.find(order[2].to_i), order[3].to_sym)
       # order_info = Order.new(order[0].to_i, Order.products_hash(order[1]), Customer.find(order[2].to_i),order[3].to_sym)
       orders << order_info
     end
