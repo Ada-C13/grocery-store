@@ -113,11 +113,19 @@ describe "Order Wave 1" do
   end
 end
 
-# TODO: change 'xdescribe' to 'describe' to run these tests
-xdescribe "Order Wave 2" do
+describe "Order Wave 2" do
   describe "Order.all" do
     it "Returns an array of all orders" do
-      # TODO: Your test code here!
+      orders = Order.all
+
+      expect(orders.length).must_equal 100
+      orders.each do |order|
+        expect(order).must_be_kind_of Order
+        expect(order.id).must_be_kind_of Integer
+        expect(order.products).must_be_kind_of Hash
+        expect(order.customer).must_be_kind_of Customer
+        expect(order.fulfillment_status).must_be_kind_of Symbol
+      end
     end
 
     it "Returns accurate information about the first order" do
@@ -141,21 +149,49 @@ xdescribe "Order Wave 2" do
     end
 
     it "Returns accurate information about the last order" do
-      # TODO: Your test code here!
-    end
+      id = 100
+      products = {
+        "Amaranth" => 83.81,
+        "Smoked Trout" => 70.6,
+        "Cheddar" => 5.63
+      }
+      customer_id = 20
+      fulfillment_status = :pending
+
+      order = Order.all.last
+
+      # Check that all data was loaded as expected
+      expect(order.id).must_equal id
+      expect(order.products).must_equal products
+      expect(order.customer).must_be_kind_of Customer
+      expect(order.customer.id).must_equal customer_id
+      expect(order.fulfillment_status).must_equal fulfillment_status    end
   end
 
   describe "Order.find" do
     it "Can find the first order from the CSV" do
-      # TODO: Your test code here!
+      first_order = Order.find(1)
+
+      expect(first_order).must_be_kind_of Order
+      expect(first_order.customer.id).must_equal 25
+      expect(first_order.id).must_equal 1
+      expect(first_order.fulfillment_status).must_equal :complete
+      expect(first_order.products).must_be_kind_of Hash
     end
 
     it "Can find the last order from the CSV" do
-      # TODO: Your test code here!
-    end
+      last_order = Order.find(100)
+
+      expect(last_order).must_be_kind_of Order
+      expect(last_order.customer.id).must_equal 20
+      expect(last_order.id).must_equal 100
+      expect(last_order.fulfillment_status).must_equal :pending
+      expect(last_order.products).must_be_kind_of Hash    end
 
     it "Returns nil for an order that doesn't exist" do
-      # TODO: Your test code here!
+      nonexistent_order_num = 101
+      
+      expect(Order.find(nonexistent_order_num)).must_be_nil
     end
   end
 end
