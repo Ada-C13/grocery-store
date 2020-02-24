@@ -22,6 +22,12 @@ class Order
 		@products.store(name, price)
 	end
 
+	def remove_product(name)
+		raise ArgumentError.new("No product with that name was found!") if !@products.key?(name)
+
+		@products.delete(name)
+	end
+
 	def total
 		sum = @products.values.reduce(:+)
 		return @products == {} ? 0 : (sum * 1.075).round(2)
