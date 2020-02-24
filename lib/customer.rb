@@ -45,9 +45,9 @@ class Customer
         return nil 
     end
    
-    def save(filename)
+    def self.save(filename,customer)
         CSV.open(filename, "wb") do |csv|  
-            row = [self.id,self.email,self.address]
+            row = [customer.id,customer.email,customer.address]
             csv<< row 
         end  
         return true
