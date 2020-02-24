@@ -25,7 +25,7 @@ class Order
     @fulfillment_status = fulfillment_status
   end
 
-  # Instance Method to calculate total cost of the order, with 7.5% tax
+  # Instance Method to Calculate Total Cost of the Order, with 7.5% Tax
   def total
     sum   = @products.values.sum
     tax   = sum * 0.075

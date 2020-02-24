@@ -20,7 +20,7 @@ class Customer
     @address = address
   end
 
-  # Class Method to read from a CSV file and return an array of customers
+  # Class Method to Read from a CSV File and Return an Array of Customers
   def self.all
     filename      = "data/customers.csv"
     csv_all       = CSV.read(filename)
@@ -38,12 +38,12 @@ class Customer
     return all_customers
   end
 
-  # Class Method to find a customer by the customer id
+  # Class Method to Find a Customer by the Customer id
   def self.find(id)
     return Customer.all.select { |c| c.id == id }.first
   end
 
-  # Class Method to save customer info to a CSV file
+  # Class Method to Save Customer Info to a CSV File
   def self.save(filename, new_customer)
     CSV.open(filename, "w") do |csv|
       csv << [new_customer.id,
