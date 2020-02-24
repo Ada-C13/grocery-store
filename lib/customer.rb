@@ -38,13 +38,12 @@ class Customer
   end
   
   def self.find(id)
-    # 
     customers_info = Customer.all
     customers_info.select do |customer|
       if customer.id == id
         return Customer.new(customer.id, customer.email,customer.address)
       end
-  end
+    end
   return nil
   end
 end

@@ -83,9 +83,3 @@ class Order
   return nil
   end
 end
-
-# p Order.all.product
-# new_order = Order.new("123")
-# puts new_order.customer_info("dd")
-# puts new_order.fulfillment_status
-# puts new_order.total
