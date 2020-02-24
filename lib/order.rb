@@ -1,3 +1,6 @@
+require 'csv'
+require_relative 'customer'
+
 class Order
 	attr_reader :id
 	attr_accessor :products, :customer, :fulfillment_status
@@ -21,4 +24,32 @@ class Order
 		sum = @products.values.reduce(:+)
 		return @products == {} ? 0 : (sum * 1.075).round(2)
 	end
+	
+	# When invoked, this method creates a hash by splitting a string at each semicolon, then mapping each smaller string, split by a colon, into a key-value pair (Source: 200_success, https://codereview.stackexchange.com/questions/80572/parsing-a-string-of-the-form-key1-value1key2-value2-into-a-hash)
+	def self.all
+		CSV.read('data/orders.csv', converters: :numeric).map do |order|
+			@products = Hash[
+				order[1].split(';').map do |product|
+					name, price = product.split(':')
+					[name, price.to_f]
+				end
+			]
+
+			self.new(
+				order[0],
+				@products,
+				Customer.find(order[2]),
+				order[3].to_sym
+			)
+		end
+	end
+
+	def self.find(id)
+		orders = self.all
+		return orders.find do |order|
+			order.id == id
+		end
+	end
 end
+
+Order.all
