@@ -12,9 +12,6 @@ class Order
     @fulfillment_status = fulfillment_status
     
     raise ArgumentError if !FULFILLMENT_VALID_STATUS.include?(fulfillment_status)
-    # if fulfillment_status != :pending || fulfillment_status != :paid || fulfillment_status != :processing || fulfillment_status != :shipped || fulfillment_status != :complete
-    #   raise ArgumentError
-    # end
   end
   
   def total
@@ -51,11 +48,12 @@ class Order
     return all_orders
   end
   
-  # def self.find(id)
-  #   self.all.find do |order|
-  #     if order.id == id
-  #       return id
-  #     else
-  #       nil
-  # end
+  def self.find(id)
+    Order.all.each do |order|
+      if order.id == id
+        return order
+      end
+    end
+   return nil
+  end
 end
