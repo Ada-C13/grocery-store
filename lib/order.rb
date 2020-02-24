@@ -2,6 +2,16 @@
 
 require_relative "customer.rb"
 
+  # helper method 
+  def convert_to_hash(string)
+    pairs = string.split(";")
+    pairs2 = pairs.map{ |pair| pair.split(":")}
+    pairs2.each do |pair|
+      pair[1] = pair[1].to_f
+    end 
+    return pairs2.to_h
+  end
+
 class Order
 
   attr_accessor :products, :customer, :fulfillment_status 
@@ -35,5 +45,21 @@ class Order
     end
     products[product_name] = price
   end
+
+
+  def self.all
+    all_orders = []
+    CSV.read("../data/orders.csv").each do |order|
+      ordered_products = convert_to_hash(order[1])
+      customer = Customer.find(order[2].to_i)
+      unique_order = Order.new(order[0].to_i, ordered_products, customer, order[3].to_sym)
+      all_orders << unique_order
+    end
+    return all_orders
+  end
+
+  def self.find(id)
+
+  end 
 
 end 
