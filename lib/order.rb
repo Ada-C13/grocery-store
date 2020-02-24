@@ -3,7 +3,7 @@ class Order
   attr_reader :id
   attr_accessor :products, :customer, :fulfillment_status
   
-  
+  # method for initializing instance of order
   def initialize(id, products, customer, fulfillment_status = :pending)
     @id = id
     @products = products
@@ -17,11 +17,13 @@ class Order
     end
   end
   
+  # totals the sum of products in an order with tax, rounded to 2 decimal places
   def total
     total = (@products.values.sum) * 1.075
     return total.round(2)
   end
   
+  # adds a product to collection of products
   def add_product(name, price)
     @name = name # this is a key
     @price = price # this is that key's value
@@ -32,6 +34,7 @@ class Order
     end
   end
   
+  # parses product data into correct format
   def self.parse_products(input)
     product_hash = {}
     
@@ -46,11 +49,8 @@ class Order
     
     return product_hash
   end
-  
-  #what the fuck does this actually return??
-  #and is it doing what we want? maybe not!
-  
-  
+    
+  # returns all instances of orders
   def self.all
     orders = CSV.read('./data/orders.csv')
     
@@ -71,9 +71,8 @@ class Order
     return all_orders
   end
   
+  # finds order by order id - returns instance of that order
   def self.find(id)
-    # returns a single instance of order object where value of id matches passed id
-    # use order.all (not the CSV data)
     all_orders = self.all
     
     found_orders_array = all_orders.select { |order| order.id == id }

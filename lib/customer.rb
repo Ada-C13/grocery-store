@@ -5,12 +5,14 @@ class Customer
   attr_reader :id
   attr_accessor :email, :address 
   
+  # method for initialize instance of customer
   def initialize(id, email, address)
     @id = id # this is an integer
     @email = email # this is a string
     @address = address # this is a hash
   end
   
+  # reads CSV file data, instantiates customers, returns a list of all customers
   def self.all
     all_customers = []
     customers = CSV.read('./data/customers.csv')
@@ -29,6 +31,7 @@ class Customer
     return all_customers
   end
   
+  # method for locating customer by id number, returns instance of customer
   def self.find(id)
     all_customers = self.all
     
@@ -43,4 +46,4 @@ class Customer
     return found_customer
   end
   
-end # end customer class
+end

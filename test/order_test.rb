@@ -171,14 +171,14 @@ end
 
 describe "Order.find" do
   it "Can find the first order from the CSV" do
-    first = Order.find(1)# TODO: Your test code here!
+    first = Order.find(1)
     expect(first).must_be_kind_of Order
     expect(first.id).must_equal 1
   end
   
   it "Can find the last order from the CSV" do
     last = Order.find(100)
-
+    
     expect(last).must_be_kind_of Order
     expect(last.id).must_equal 100
   end
@@ -187,4 +187,3 @@ describe "Order.find" do
     expect(Order.find(1000)).must_be_nil
   end
 end
-
