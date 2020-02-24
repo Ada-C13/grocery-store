@@ -190,9 +190,7 @@ describe "Order Wave 2" do
     end
 
     it "Returns nil for an order that doesn't exist" do
-      bogus_order = Order.find(101)
-  
-      expect(bogus_order).assert_nil result
+      expect(Order.find(1337)).must_be_nil
     end
   end
 end
