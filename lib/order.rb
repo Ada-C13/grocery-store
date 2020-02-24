@@ -52,10 +52,6 @@ class Order
     return products
   end
 
-  # def self.find_customer(customer_id)
-  #   return (self.all).select { |order| order.customer.id == customer_id}
-  # end
-
   def self.all
     order_csv = CSV.read("./data/orders.csv")
     orders = order_csv.map do |order_row|
@@ -65,14 +61,14 @@ class Order
         Customer.find(order_row[2].to_i), # customer
         order_row[3].to_sym) # fulfilment status 
       end
-  
-
   return orders
   end 
 
   def self.find(id)
     return (self.all).bsearch { |order| id <=> order.id}
   end
+
+  ###this does not work to return nil...why?
   # def self.find(id)
   #   Order.all.each do |order|
   #     if id == order.id
