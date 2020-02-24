@@ -47,20 +47,38 @@ class Customer
     return nil
   end
 
+#******WAVE 3 *********************************************
+# Create a method called save
+# Creates a NEW csv file and adds a customer's details
+# Inputs
+  # filename (string) - this filename is what the file it will create
+  # new_customer (Customer object) - a customer to be added to csv file
+# return true all conditions
 
-
-
-
-
+  def self.save(filename, aCustomer)
+    # create a new csv file based on filename: https://stackoverflow.com/questions/12718872/how-do-i-create-a-new-csv-file-in-ruby
+    CSV.open(filename, "wb") do |csv|
+        # write customer information into the file
+              #id,        email,                   street,      city,  state,  zip
+              #1, leonard.rogahn@hagenes.org,71596 Eden Route,Connellymouth,LA,98872-9105
+      csv << [aCustomer.id, aCustomer.email, aCustomer.address[:street], aCustomer.address[:city], aCustomer.address[:state], aCustomer.address[:zip]]
+    end
+  
+    return true
+  end
 
 end 
 
 # {street: "123 Main", city: "Seattle", state: "WA", zip: "98101"}
 
-test_customer = Customer.new(1,"leonard.rogahn@hagenes.org",{street: "71596 Eden Route", city: "Connellymouth", state: "LA", zip: "98872"})
+# test_customer = Customer.new(1,"leonard.rogahn@hagenes.org",{street: "71596 Eden Route", city: "Connellymouth", state: "LA", zip: "98872"})
 # puts test_customer
 # puts test_customer.id
 # puts test_customer.email
 # puts test_customer.address
 # puts Customer.all #self.all is public, so to call it, use the actual class name
-puts Customer.find(34).id
+# puts Customer.find(34).id
+
+#Calling save method
+# wave3_tempcustomer = Customer.new(100, "charlie@puppy.com",{street:"19201 ok street", city: "renton", state: "wa", zip: "21455"})
+# puts Customer.save("new_customer.csv",wave3_tempcustomer)

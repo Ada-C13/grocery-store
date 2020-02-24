@@ -105,27 +105,27 @@ class Order
   end
 end
 
-test_Order = Order.new(100, { "banana" => 1.99, "cracker" => 3.00 }, "char", :pending)
-puts test_Order.id
-puts test_Order.products
-puts test_Order.customer
-puts test_Order.fulfillment_status
-test_Order.customer = "me"
-puts test_Order.customer
+# test_Order = Order.new(100, { "banana" => 1.99, "cracker" => 3.00 }, "char", :pending)
+# puts test_Order.id
+# puts test_Order.products
+# puts test_Order.customer
+# puts test_Order.fulfillment_status
+# test_Order.customer = "me"
+# puts test_Order.customer
 
-puts test_Order.total()
-test_Order.add_product("cheese", 5.00)
-puts test_Order.products
-puts test_Order.total
-test_Order.remove_product("cheese")
-puts test_Order.products
-puts Order.all[7].products
+# puts test_Order.total()
+# test_Order.add_product("cheese", 5.00)
+# puts test_Order.products
+# puts test_Order.total
+# test_Order.remove_product("cheese")
+# puts test_Order.products
+# puts Order.all[7].products
 
 
-puts Customer.find(25).email
-Order.find_by_customer(25).each do |order|
-  puts order
-end
+# puts Customer.find(25).email
+# Order.find_by_customer(25).each do |order|
+#   puts order
+# end
 
 
 
