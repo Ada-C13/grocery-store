@@ -9,7 +9,7 @@
 class Order
 
   # Generator
-  attr_reader :id
+  attr_reader   :id
   attr_accessor :products, :customer, :fulfillment_status
 
   # Constructor
@@ -49,7 +49,7 @@ class Order
     @products.delete(name)
   end
 
-  # Class Method to help parse the product string in the CSV file
+  # Class Method to Parse the Product String in the CSV File
   # Ex:"Amaranth:83.81;Smoked Trout:70.6;Cheddar:5.63"
   def self.products_str_to_hash(products_str)
     products_arr  = products_str.split(";")
@@ -61,14 +61,13 @@ class Order
     return products_hash
   end
 
-  # Class Method to read from a CSV file and return an array of orders
+  # Class Method to Read from a CSV File and Return an Array of Orders
   def self.all
     filename   = "data/orders.csv"
     csv_all    = CSV.read(filename)
 
     all_orders = []
     csv_all.each do |csv_row|
-
       order_id = csv_row[0].to_i
       products = Order.products_str_to_hash(csv_row[1])
       customer = Customer.find(csv_row[2].to_i)
@@ -80,12 +79,12 @@ class Order
     return all_orders
   end
 
-  # Class Method to find an order by the order id
+  # Class Method to Find an Order by the Order ID
   def self.find(id)
     return Order.all.select { |o| o.id == id }.first
   end
 
-  # Class Method to find all orders for a given customer
+  # Class Method to Find All Orders for a Given Customer
   def self.find_by_customer(customer_id)
     return Order.all.select { |o| o.customer.id == customer_id }
   end
