@@ -48,7 +48,7 @@ class Customer
       email = new_customer.email
       address = new_customer.address.values
 
-      new_customer_data = [id, email, *address]
+      new_customer_data = [id, email, *address] # *adds the address values without listing them
       csv << new_customer_data
     end
     return true
