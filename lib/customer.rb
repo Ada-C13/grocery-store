@@ -24,7 +24,3 @@ class Customer
   end
 end
 
-customer1 = Customer.new("Sharon", "keikei@gmail.com", {Street: "123 Main", City: "Los Angeles", Zip: 90024})
-customer2 = Customer.new("Cindy", "cindy@gmail.com", {Street: "123 First street", City: "Seattle", Zip: 90024})
-customer3 = Customer.new("Joseph", "keikei@gmail.com", {Street: "1409 Midvale Ave", City: "Los Angeles", Zip: 90024})
-

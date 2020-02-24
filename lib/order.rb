@@ -9,8 +9,8 @@ class Order
   def initialize(id, products, customer, fulfillment_status= :pending)
     @id =id
     @products = products
-    @fulfillment_status = fulfillment_status
     @customer = customer
+    @fulfillment_status = fulfillment_status
     unless @@OPTIONS.include? @fulfillment_status
       raise ArgumentError.new("This is not a valid fulfillment options")
     end
@@ -38,14 +38,39 @@ class Order
     end
   end
 
-=begin
-  def self.all 
-    orders_data = CSV.read("./data/orders.csv") 
+  def self.all
     orders = []
-    orders_data.each do |order|
-     orders << Order.new(order[0].to_i, order[1] order[2].to_i, fulfillment_status = order[3].to_sym )
+    
+    orders_from_csv = CSV.read('data/orders.csv')
+    orders_from_csv.each do |each_order|
+      temp_hash = {}
+      products_array = []
+      products_array << each_order[1] 
+      products_array.each do |product_list|
+        temp_array = []
+        temp_array = product_list.split(";")
+        temp_array.each do |product|
+          item_array = []
+          item = product.split(":")
+          temp_hash[item[0]] = item[1].to_f
+        end 
+      end
+      orders << Order.new(each_order[0].to_i, temp_hash, Customer.find(each_order[2].to_i), each_order[3].to_sym)
     end
     return orders
   end
-=end 
+
+  def self.find(id)
+    return self.all[id-1]
+  end
+
+  def self.find_by_customer(customer_id)
+    customer_order = []
+    Order.all.each do |order|
+      if customer_id == order.customer.id
+        customer_order<< order
+      end
+    end
+    return customer_order
+  end
 end
