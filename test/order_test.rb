@@ -122,7 +122,6 @@ describe "Order Wave 2" do
       expect(order.length).must_equal 100
       order.each do |o|
         expect(o).must_be_kind_of Order
-
         expect(o.id).must_be_kind_of Integer
         expect(o.products).must_be_kind_of Hash
         expect(o.customer).must_be_kind_of Customer
@@ -193,4 +192,26 @@ describe "Order Wave 2" do
     end
   end
 
+  describe "Order.find_by_customer(customer_id)" do
+    it "returns a list of Order instances where the value of the customer's ID matches the passed parameter" do
+      customer_4 = Order.find_by_customer(4)
+
+      expect(customer_4).must_be_kind_of Array
+      expect(customer_4[0]).must_be_kind_of Order
+      expect(customer_4[0].id).must_equal 11
+      expect(customer_4[2].id).must_equal 86
+    end
+
+    it "returns the correct number of Order instances where customer ID matches passed parameter" do
+      customer_4 = Order.find_by_customer(4)
+
+      expect(customer_4.length).must_equal 3
+    end
+
+    it "Returns nil for a customer that doesn't exist" do
+      non_customer = Order.find_by_customer(101)
+      
+      expect(non_customer.length).must_equal 0
+    end
+  end
 end
