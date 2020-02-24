@@ -10,8 +10,6 @@ class Customer
     @id = id
     @email = email
     @address = address
-    # @order = order
-    # @order.customer_info(self)
   end
 
   # Method to access to all the customers.
