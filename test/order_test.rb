@@ -1,3 +1,5 @@
+require 'awesome_print'
+
 require 'minitest/autorun'
 require 'minitest/reporters'
 require 'minitest/skip_dsl'
@@ -7,7 +9,7 @@ require_relative '../lib/order'
 
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
-describe "Order Wave 1" do
+xdescribe "Order Wave 1" do
   let(:customer) do
     address = {
       street: "123 Main",
@@ -58,6 +60,13 @@ describe "Order Wave 1" do
           Order.new(1, {}, customer, fulfillment_status)
         }.must_raise ArgumentError
       end
+    end
+
+    it "stores statuses as symbols" do
+      id = 1337
+      fulfillment_status = :shipped
+      order = Order.new(id, {}, customer, fulfillment_status)
+      expect(order.fulfillment_status).must_be_kind_of Symbol
     end
   end
 
@@ -110,14 +119,59 @@ describe "Order Wave 1" do
       # The list of products should not have been modified
       expect(order.total).must_equal before_total
     end
+
+  end
+  
+  describe "#remove_product" do
+    it "decreases the count of products" do
+      products = { "banana" => 1.99, "cracker" => 3.00 }
+      before_count = products.count
+      order = Order.new(1337, products, customer)
+
+      order.remove_product("banana")
+      expected_count = before_count - 1
+      expect(order.products.count).must_equal expected_count
+    end
+
+    it "is removed from the collection of products" do
+      products = { "banana" => 1.99, "cracker" => 3.00 }
+
+      order = Order.new(1337, products, customer)
+      before_total = order.total
+
+      order.remove_product("banana")
+
+      # The remaining total must be less than before the removal
+      expect(order.total).must_be :<, before_total 
+    end
+
+    it "Raises an ArgumentError if the product does not exist" do
+      products = { "banana" => 1.99, "cracker" => 3.00 }
+
+      order = Order.new(1337, products, customer)
+
+      expect {
+        order.remove_product("durian")
+      }.must_raise ArgumentError
+    end
   end
 end
 
 # TODO: change 'xdescribe' to 'describe' to run these tests
-xdescribe "Order Wave 2" do
+describe "Order Wave 2" do
   describe "Order.all" do
     it "Returns an array of all orders" do
-      # TODO: Your test code here!
+      orders = Order.all
+      expect(orders.length).must_equal 100
+
+      orders.each do |o|
+        expect(o).must_be_kind_of Order
+
+        expect(o.id).must_be_kind_of Integer
+        expect(o.products).must_be_kind_of Hash
+        expect(o.customer).must_be_kind_of Customer
+        expect(o.fulfillment_status).must_be_kind_of Symbol
+      end
     end
 
     it "Returns accurate information about the first order" do
@@ -141,21 +195,42 @@ xdescribe "Order Wave 2" do
     end
 
     it "Returns accurate information about the last order" do
-      # TODO: Your test code here!
+      last = Order.all.last
+
+      expect(last.id).must_equal 100
+      expect(last.products).must_be_kind_of Hash
+      expect(last.products["Amaranth"]).must_equal 83.81
+      expect(last.customer).must_be_kind_of Customer
+      expect(last.customer.id).must_equal 20
+      expect(last.fulfillment_status).must_equal :pending
     end
   end
 
   describe "Order.find" do
     it "Can find the first order from the CSV" do
-      # TODO: Your test code here!
+      first = Order.find(1)
+      expect(first).must_be_kind_of Order
+      expect(first.id).must_equal 1
     end
 
     it "Can find the last order from the CSV" do
-      # TODO: Your test code here!
+      last = Order.find(100)
+
+      expect(last).must_be_kind_of Order
+      expect(last.id).must_equal 100
     end
 
     it "Returns nil for an order that doesn't exist" do
-      # TODO: Your test code here!
+      bogus_order = Order.find(1337)
+      assert Order.find(1337), nil
+    end
+  end
+
+  describe "Order.find_by_customer" do
+    it "Can find all orders placed by one customer" do
+      all_customer_orders = Order.find_by_customer(25)
+      expect(all_customer_orders).must_be_kind_of Array
+      expect(all_customer_orders.length).must_equal 6
     end
   end
 end
