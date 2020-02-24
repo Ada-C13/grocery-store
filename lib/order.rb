@@ -46,7 +46,34 @@ class Order
     @products[name] = price
   end
 
-  order_csv = CSV.parse(File.read(__dir__ + "/../data/orders.csv"), headers: true)
+  def self.all
+    # returns a collection of Order instances, representing all of the Orders described in the CSV file
+    orders = []
+
+    CSV.read("data/orders.csv").each do |order|
+      products = {}
+      id = order[0].to_i
+      split_1 = order[1].split(";")
+      split_1.each do |string|
+        split_2 = string.split(":")
+        products[split_2[0]] = split_2[1].to_f
+      end
+      customer = Customer.find(order[2].to_i)
+      fulfillment_status = order[3].to_sym
+
+      orders << Order.new(id, products, customer, fulfillment_status)
+    end
+    return orders
+  end
+
+  def self.find(id)
+    Order.all.each do |order|
+      if order.id == id
+        return order
+      end
+    end
+    return nil
+  end
 end
 
 # ! Optional

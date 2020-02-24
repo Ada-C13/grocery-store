@@ -11,7 +11,7 @@ class Customer
   end
 
   def self.all
-    all = []
+    customers = []
     # returns a collection of Customer instances, representing all of the Customer described in the CSV
     CSV.read("data/customers.csv").each do |customer|
       id = customer[0].to_i
@@ -22,9 +22,9 @@ class Customer
       address[:state] = customer[4]
       address[:zip] = customer[5]
 
-      all << Customer.new(id, email, address)
+      customers << Customer.new(id, email, address)
     end
-    return all
+    return customers
   end
 
   def self.find(id)
