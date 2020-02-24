@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
-require_relative 'order.rb'
 require 'csv'
 require 'awesome_print'
-
-filename = CSV.read('data/customers.csv')
 
 class Customer
   attr_reader :id
@@ -37,6 +34,8 @@ class Customer
     end
     nil
   end
+
+  
 end
 
 # def save(filename,new_customer)

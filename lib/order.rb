@@ -37,36 +37,29 @@ class Order
     end
   end
 
-  #  def self.products_to_string(csv_input)
-  #     products = {}
-  #     product_purchase = csv_input.split (";")
-  #     product_purchase.each do |item|
-  #      product_name, product_value = item.split ":"
-  #       products[product_name] = product_value
-  #     end
-  #     return products
-
-  #   end
   def self.products_hash(str)
-    product_string = str.split(':')
+    product_string = str.split(";")
     product_string.map! do |element|
-      element.split(';')
+      element.split(':')
     end
     product_hash = {}
     product_string.each do |product_purchase|
-      product_hash[product_purchase[0]] = product_purchase[1]
+      product_hash[product_purchase[0]]= product_purchase[1].to_f
     end
-    product_purchase
+     product_hash
   end
 
   def self.all
     orders = []
-    CSV.read('./data/orders.csv').each do |order|
-      order_info = Order.new(order[0].to_i, Order.products_hash(order[1]), Customer.find(order[2].to_i), order[3].to_sym)
+    CSV.read('./data/orders.csv').map do |order|
+       id = order[0].to_i
+       products = products_hash(order[1])
+       order_info = Order.new(id, products, Customer.find(order[2].to_i),order[3].to_sym)
+      # order_info = Order.new(order[0].to_i, Order.products_hash(order[1]), Customer.find(order[2].to_i),order[3].to_sym)
       orders << order_info
     end
     orders
-end
+  end
 
   def self.find(id)
     order_array = Order.all
