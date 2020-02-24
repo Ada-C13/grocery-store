@@ -1,4 +1,8 @@
+require 'csv'
+
 class Order
+
+  orders = CSV.read('data/orders.csv', headers: true).map(&:to_h)
 
   attr_reader :id
   attr_accessor :products, :customer, :fulfillment_status
@@ -28,4 +32,37 @@ class Order
       @products.store(name, price)
     end
   end 
+
+  def self.all
+    csv_orders = CSV.read('data/orders.csv')
+    orders = []
+    csv_orders.each do |row|
+      order_id = row[0].to_i
+      temp_products = row[1].split(";") 
+      products = {}
+
+      temp_products.each do |product|
+        product = product.split(":")
+        name = product[0]
+        price = product[1]
+        products.store(name, price.to_f)
+      end 
+
+      customer_id = Customer.find(row[2].to_i)
+      fulfillment_status = row[3].to_sym
+
+      orders.push(Order.new(order_id, products, customer_id, fulfillment_status))
+    end 
+    return orders
+  end
+
+  
+  def self.find(id)
+    Order.all.each do |order|
+      if order.id == id
+        return order
+      end
+    end
+    return nil
+  end
 end
