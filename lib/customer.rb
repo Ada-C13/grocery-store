@@ -45,16 +45,12 @@ class Customer
         return nil 
     end
    
-def save(filename,customer)
-    CSV.open(filename, "wb") do |csv|  
-        row = [customer.id,customer.email,customer.address]
-        cvs << row 
-    end  
-    return true
-end
-
-hala = Customer.new(1,"h.m.haddad@gmail.com",{"street": "13258 124th","city": "kirkland","state": "wa","zip": "98034"})
-puts save("data/new_customers.csv",hala)
+    def save(filename)
+        CSV.open(filename, "wb") do |csv|  
+            row = [self.id,self.email,self.address]
+            csv<< row 
+        end  
+        return true
+    end
 
 end 
-
