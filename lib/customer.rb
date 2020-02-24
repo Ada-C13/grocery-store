@@ -11,8 +11,8 @@ class Customer
 	end
 
 	def self.all
-		CSV.read('data/customers.csv', converters: :all).map do |customer|
-			Customer.new(
+		CSV.read('data/customers.csv', converters: :numeric).map do |customer|
+			self.new(
 				customer[0],
 				customer[1],
 				{ 
@@ -26,7 +26,7 @@ class Customer
 	end
 
 	def self.find(id)
-		customers = Customer.all
+		customers = self.all
 		return customers.find do |customer|
 			customer.id == id
 		end
