@@ -47,9 +47,9 @@ class Order
     order_csv.each do |info|
       products_price = {} 
 
-      info[1].split(";").each do |prod|
-        product = prod.split(":")
-        products_price[product[0]] = prod[1].to_f
+      info[1].split(";").each do |product|
+        product = product.split(":")
+        products_price[product[0]] = product[1].to_f
       end
 
       new_order = self.new(info[0].to_i, products_price, Customer.find(info[2].to_i), info[3].to_sym)
