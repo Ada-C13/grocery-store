@@ -150,6 +150,7 @@ end
 
 # TODO: change 'xdescribe' to 'describe' to run these tests
 describe "Order Wave 2" do
+
   describe "Order.all" do
     it "Returns an array of all orders" do
       # TODO: Your test code here!
@@ -215,5 +216,12 @@ describe "Order Wave 2" do
       expect(Order.find(999)).must_be_nil
       expect(Order.find(0)).must_be_nil
     end
+
   end
+
+  describe "find_by_customer" do
+    it "" do
+    end
+  end
+
 end
