@@ -18,13 +18,13 @@ class Customer
       id = info[0].to_i
       email = info[1]
       address = { 
-        :num_street => info[2],
+        :street => info[2],
         :city => info[3],
         :state => info[4],
         :zip => info[5]
       }
     
-      new_customer = Customer.new(id, email, address)
+      new_customer = self.new(id, email, address)
       all_customers << new_customer
     end 
     

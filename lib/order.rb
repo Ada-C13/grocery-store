@@ -52,7 +52,7 @@ class Order
         products_price[product[0]] = prod[1].to_f
       end
 
-      new_order = Order.new(info[0].to_i, products_price, Customer.find(info[2].to_i), info[3].to_sym)
+      new_order = self.new(info[0].to_i, products_price, Customer.find(info[2].to_i), info[3].to_sym)
       all_orders << new_order
     
     end
