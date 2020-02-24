@@ -4,6 +4,7 @@
 # Author : Suely Barreto
 # Date   : February 2020
 # 
+
 require 'csv'
 
 # Create a Class Customer
