@@ -41,31 +41,45 @@ class Order
     end
   end
 
+  def self.parse_products(product_string)
+    products_array = product_string.split(/[;:]/)
+    products = {}
+    i=0
+    (products_array.length/2).times do 
+      products[products_array[i]] = products_array[i+1].to_f
+      i += 2
+    end
+    return products
+  end
+
+  # def self.find_customer(customer_id)
+  #   return (self.all).select { |order| order.customer.id == customer_id}
+  # end
+
   def self.all
     order_csv = CSV.read("./data/orders.csv")
     orders = order_csv.map do |order_row|
+      products = Order.parse_products(order_row[1])
       Order.new(order_row[0], # order id
-        order_row[1], # products
-        order_row[2], # customer id
-        order_row[3]) # fulfilment status 
-    end 
+        products, # products
+        Customer.find(order_row[2].to_i), # customer
+        order_row[3].to_sym) # fulfilment status 
+      end
   
-  return 
+
+  return orders
   end 
 
-  # @id = id
-  # @products = products
-  # @customer = customer
-  # @fulfil
-
-
-
-
-
+  def self.find(id)
+    return (self.all).bsearch { |order| id <=> order.id}
+  end
   # def self.find(id)
   #   Order.all.each do |order|
   #     if id == order.id
-  #   return order
+  #       return order
+  #     end
+  #   end
   # end
   
 end
+
