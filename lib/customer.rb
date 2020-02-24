@@ -40,7 +40,8 @@ class Customer
   def self.find(id)
     Customer.all.find { |customer| customer.id == id }
   end
-
+  
+  # method for writing a new customer's information into a new customer CSV file.
   def self.save(filename, new_customer)
     CSV.open(filename, "a") do |csv|
       id = new_customer.id
