@@ -50,11 +50,6 @@ class Order
 
     def self.find(id)
         # returns an instance of Order where the value of the id field in the CSV matches the passed parameter
-        self.all.each do |order|
-            if order.id == id
-                return order
-            end
-        end
-        return nil
+        Order.all.find { |order| order.id == id }
     end
 end

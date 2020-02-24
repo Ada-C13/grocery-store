@@ -22,12 +22,6 @@ class Customer
     end
 
     def self.find(id)
-        # returns instance of Customer where the value of the id field in the CSV matches the passed parameter
-        self.all.each do |customer|
-            if customer.id == id
-                return customer
-            end
-        end
-        return nil
+        Customer.all.find { |customer| customer.id == id }
     end
 end
