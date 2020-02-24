@@ -12,11 +12,13 @@ class Order
 		@products = products
 		@customer = customer
 		@fulfillment_status = fulfillment_status
+
 		raise ArgumentError.new("The fulfillment status is not valid!") if !VALID_STATUSES.include?(@fulfillment_status)
 	end
 
 	def add_product(name, price)
 		raise ArgumentError.new("A product with this name has already been added to the order!") if @products.key?(name)
+		
 		@products.store(name, price)
 	end
 
@@ -50,6 +52,11 @@ class Order
 			order.id == id
 		end
 	end
-end
 
-Order.all
+	def self.find_by_customer(customer_id)
+		orders = self.all
+		return orders.select do |order|
+			order.customer.id == customer_id
+		end
+	end
+end

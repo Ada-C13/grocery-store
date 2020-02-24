@@ -192,4 +192,16 @@ describe "Order Wave 2" do
       expect(Order.find(1337)).must_be_nil
     end
   end
+
+  describe "Order.find_by_customer" do
+    it "Returns an array of all orders that include customer_id" do
+      orders = Order.find_by_customer(10)
+
+      expect(orders.length).must_equal 4
+      orders.each do |o|
+        expect(o).must_be_kind_of Order
+        expect(o.customer.id).must_equal 10
+      end
+    end
+  end
 end
