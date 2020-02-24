@@ -42,6 +42,17 @@ class Order
     end
     return nil
   end
+
+  #Order.find_by_customer(customer_id) - returns a list of Order instances where the value of the customer's ID matches the passed parameter
+  def self.find_by_customer(customer_id)
+    all_customer_orders = []
+    Order.all.each do |order|
+      if order.customer.id == customer_id
+        all_customer_orders << order
+      end
+    end
+    return all_customer_orders
+  end
   
   def total
    total = 0
