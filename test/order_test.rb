@@ -1,9 +1,9 @@
-require 'minitest/autorun'
-require 'minitest/reporters'
-require 'minitest/skip_dsl'
+require "minitest/autorun"
+require "minitest/reporters"
+require minitest/skip_dsl"
 
-require_relative '../lib/customer'
-require_relative '../lib/order'
+require_relative ""../lib/customer"
+require_relative "../lib/order"
 
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
@@ -13,7 +13,7 @@ describe "Order Wave 1" do
       street: "123 Main",
       city: "Seattle",
       state: "WA",
-      zip: "98101"
+      zip: "98101",
     }
     Customer.new(123, "a@a.co", address)
   end
@@ -52,7 +52,7 @@ describe "Order Wave 1" do
     end
 
     it "Raises an ArgumentError for bogus statuses" do
-      bogus_statuses = [3, :bogus, 'pending', nil]
+      bogus_statuses = [3, :bogus, "pending", nil]
       bogus_statuses.each do |fulfillment_status|
         expect {
           Order.new(1, {}, customer, fulfillment_status)
@@ -63,7 +63,7 @@ describe "Order Wave 1" do
 
   describe "#total" do
     it "Returns the total from the collection of products" do
-      products = { "banana" => 1.99, "cracker" => 3.00 }
+      products = {"banana" => 1.99, "cracker" => 3.00}
       order = Order.new(1337, products, customer)
 
       expected_total = 5.36
@@ -80,7 +80,7 @@ describe "Order Wave 1" do
 
   describe "#add_product" do
     it "Increases the number of products" do
-      products = { "banana" => 1.99, "cracker" => 3.00 }
+      products = {"banana" => 1.99, "cracker" => 3.00}
       before_count = products.count
       order = Order.new(1337, products, customer)
 
@@ -90,7 +90,7 @@ describe "Order Wave 1" do
     end
 
     it "Is added to the collection of products" do
-      products = { "banana" => 1.99, "cracker" => 3.00 }
+      products = {"banana" => 1.99, "cracker" => 3.00}
       order = Order.new(1337, products, customer)
 
       order.add_product("sandwich", 4.25)
@@ -98,7 +98,7 @@ describe "Order Wave 1" do
     end
 
     it "Raises an ArgumentError if the product is already present" do
-      products = { "banana" => 1.99, "cracker" => 3.00 }
+      products = {"banana" => 1.99, "cracker" => 3.00}
 
       order = Order.new(1337, products, customer)
       before_total = order.total
@@ -114,10 +114,19 @@ describe "Order Wave 1" do
 end
 
 # TODO: change 'xdescribe' to 'describe' to run these tests
-xdescribe "Order Wave 2" do
+describe "Order Wave 2" do
   describe "Order.all" do
     it "Returns an array of all orders" do
       # TODO: Your test code here!
+      orders = Order.all
+      expect(orders.length).must_equal 100
+      expect(orders).must_be_kind_of Array
+      orders.each do |o|
+        expect(o).must_be_kind_of Order
+        expect(o.id).must_be_kind_of Integer
+        expect(o.customer).must_be_kind_of Customer
+        expect(o.fulfillment_status).must_be_kind_of Symbol
+      end
     end
 
     it "Returns accurate information about the first order" do
@@ -125,10 +134,10 @@ xdescribe "Order Wave 2" do
       products = {
         "Lobster" => 17.18,
         "Annatto seed" => 58.38,
-        "Camomile" => 83.21
+        "Camomile" => 83.21,
       }
       customer_id = 25
-      fulfillment_status = :complete
+      FULFILLMENT_STATUS = :complete
 
       order = Order.all.first
 
@@ -136,26 +145,99 @@ xdescribe "Order Wave 2" do
       expect(order.id).must_equal id
       expect(order.products).must_equal products
       expect(order.customer).must_be_kind_of Customer
-      expect(order.customer.id).must_equal customer_id
+      expect(order.customer.id).must_equal id
       expect(order.fulfillment_status).must_equal fulfillment_status
     end
 
+
     it "Returns accurate information about the last order" do
       # TODO: Your test code here!
+      id = 100
+      products = {
+        "Amaranth" => 83.81,
+        "Smoked Trout" => 70.6,
+        "Cheddar" => 5.63,
+      }
+      customer_id = 20
+      fulfillment_status = :pending
+
+      order = Order.all.last
+
+      # Check that all data was loaded as expected
+      expect(order.id).must_equal id
+      expect(order.products).must_equal products
+      expect(order.customer).must_be_kind_of Customer
+      expect(order.customer.id).must_equal id
+      expect(order.fulfillment_status).must_equal fulfillment_status
     end
   end
 
   describe "Order.find" do
     it "Can find the first order from the CSV" do
       # TODO: Your test code here!
+      id = 1
+      products = {
+        "Lobster" => 17.18,
+        "Annatto seed" => 58.38,
+        "Camomile" => 83.21,
+      }
+      customer_id = 25
+      fulfillment_status = :complete
+
+      first = Order.find(1)
+
+      expect(order.id).must_equal id
+      expect(order.products).must_equal products
+      expect(order.customer).must_be_kind_of Customer
+      expect(order.customer.id).must_equal id
+      expect(order.fulfillment_status).must_equal fulfillment_status
     end
 
     it "Can find the last order from the CSV" do
-      # TODO: Your test code here!
+      id = 100
+      products = {
+        "Amaranth" => 83.81,
+        "Smoked Trout" => 70.6,
+        "Cheddar" => 5.63,
+      }
+      customer_id = 20
+      fulfillment_status = :pending
+
+      last = Order.find(100)
+
+      expect(order.id).must_equal id
+      expect(order.products).must_equal products
+      expect(order.customer).must_be_kind_of Customer
+      expect(order.customer.id).must_equal id
+      expect(order.fulfillment_status).must_equal fulfillment_status
     end
 
     it "Returns nil for an order that doesn't exist" do
       # TODO: Your test code here!
+      expect(Order.find(53145)).must_be_nil
+      expect(Order.find(3000)).must_be_nil
+      describe "Order.remove_product" do
+        it "remove the product from the order" do
+          order = Order.find(24) #order: 24,Gula MelakaHaloumiHam:1.7;Chia seeds:78.22;Clams:61.12,24,shipped
+    
+          expect(order.products.length).must_equal 2
+    
+          expect { order.remove_product("Almonds") }.must_raise ArgumentError
+          expect(order.products.length).must_equal 2
+    
+          order.remove_product("Clams")
+          expect(order.products.length).must_equal 1
+        end
+      end
+    
+      describe "Find orders by customer's id" do
+        it "find orders with the same customer's id" do
+          customer_orders = Order.find_by_customer(3) #69,Vegetable Stock:46.06;Lentils:23.03;Cornichons:28.77;Snowpea sprouts:80.32,3,complete
+          first_customer_order = customer_orders[0]
+          expect(customer_orders.length).must_equal 4
+          expect(first_customer_order.id).must_equal 49
+        end
+      end
     end
   end
 end
