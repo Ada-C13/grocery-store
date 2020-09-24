@@ -17,6 +17,7 @@ describe "Order Wave 1" do
     }
     Customer.new(123, "a@a.co", address)
   end
+  #customer = Customer.new(123, "a@a.co", address)
 
   describe "#initialize" do
     it "Takes an ID, collection of products, customer, and fulfillment_status" do
@@ -71,7 +72,7 @@ describe "Order Wave 1" do
       expect(order.total).must_equal expected_total
     end
 
-    it "Returns a total of zero if there are no products" do
+   it "Returns a total of zero if there are no products" do
       order = Order.new(1337, {}, customer)
 
       expect(order.total).must_equal 0
@@ -111,13 +112,49 @@ describe "Order Wave 1" do
       expect(order.total).must_equal before_total
     end
   end
+
+  describe "#remove_product" do
+    it "Decrease the number of products" do
+      products = { "banana" => 1.99, "cracker" => 3.00 }
+      before_count = products.count
+      order = Order.new(1337, products, customer)
+
+      order.remove_product("banana")
+      expected_count = before_count - 1
+      expect(order.products.count).must_equal expected_count
+    end
+
+    it "Is removed from the collection of products" do
+      products = { "banana" => 1.99, "cracker" => 3.00 }
+      order = Order.new(1337, products, customer)
+
+      order.remove_product("banana")
+      expect(order.products.include?("banana")).must_equal false
+    end
+
+    it "Raises an ArgumentError if removing a product that doesn't exist" do
+      products = { "banana" => 1.99, "cracker" => 3.00 }
+
+      order = Order.new(1337, products, customer)
+      before_total = order.total
+
+      expect {
+        order.remove_product("cheese")
+      }.must_raise ArgumentError
+
+      # The list of products should not have been modified
+      expect(order.total).must_equal before_total
+    end
+  end
 end
 
 # TODO: change 'xdescribe' to 'describe' to run these tests
-xdescribe "Order Wave 2" do
+describe "Order Wave 2" do
   describe "Order.all" do
     it "Returns an array of all orders" do
       # TODO: Your test code here!
+      all_orders = Order.all()
+      expect(all_orders.length).must_equal 100
     end
 
     it "Returns accurate information about the first order" do
@@ -140,18 +177,30 @@ xdescribe "Order Wave 2" do
       expect(order.fulfillment_status).must_equal fulfillment_status
     end
 
-    it "Returns accurate information about the last order" do
+   it "Returns accurate information about the last order" do
       # TODO: Your test code here!
     end
   end
 
-  describe "Order.find" do
+  describe "Order.find_by_customer(customer_id)" do #method name
+    it "customer 25 has 6 orders" do #start of the test for this method
+      order_list_array = Order.find_by_customer(25) #invoking method exactly like you would in the code
+      expect(order_list_array.length).must_equal 6 #expected answer
+    end
+  end
+
+  describe "Order.all" do
     it "Can find the first order from the CSV" do
-      # TODO: Your test code here!
+    temp_order_array = Order.all
+    temp_first_order = temp_order_array[0]
+    temp_first_order_id = temp_first_order.id
+    expect(temp_first_order_id).must_equal 1
     end
 
     it "Can find the last order from the CSV" do
-      # TODO: Your test code here!
+      temp_order_array = Order.all
+      last_order = temp_order_array[-1]
+      expect(last_order.id).must_equal 100
     end
 
     it "Returns nil for an order that doesn't exist" do
