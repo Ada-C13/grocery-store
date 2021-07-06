@@ -3,6 +3,7 @@ require 'minitest/reporters'
 require 'minitest/skip_dsl'
 
 require_relative '../lib/customer'
+require 'csv'
 
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
@@ -33,12 +34,15 @@ describe "Customer Wave 1" do
 end
 
 # TODO: remove the 'x' in front of this block when you start wave 2
-xdescribe "Customer Wave 2" do
+describe "Customer Wave 2" do
   describe "Customer.all" do
     it "Returns an array of all customers" do
       customers = Customer.all
+      num_of_customers = CSV.read("data/customers.csv").length
 
-      expect(customers.length).must_equal 35
+      # Changed from 35 to "actual number of customers" from CSV since I added "Customer.save" method
+      expect(customers.length).must_equal num_of_customers
+
       customers.each do |c|
         expect(c).must_be_kind_of Customer
 
@@ -59,15 +63,16 @@ xdescribe "Customer Wave 2" do
       expect(first.address[:zip]).must_equal "98872-9105"
     end
 
-    it "Returns accurate information about the last customer" do
-      last = Customer.all.last
+    it "Returns accurate information about the 35th customer" do
+      # used "35th row" instead of the "last row", since I added "Customer.save" method. 
+      thirty_fifth_row = Customer.all[34]
 
-      expect(last.id).must_equal 35
-      expect(last.email).must_equal "rogers_koelpin@oconnell.org"
-      expect(last.address[:street]).must_equal '7513 Kaylee Summit'
-      expect(last.address[:city]).must_equal 'Uptonhaven'
-      expect(last.address[:state]).must_equal 'DE'
-      expect(last.address[:zip]).must_equal '64529-2614'
+      expect(thirty_fifth_row.id).must_equal 35
+      expect(thirty_fifth_row.email).must_equal "rogers_koelpin@oconnell.org"
+      expect(thirty_fifth_row.address[:street]).must_equal '7513 Kaylee Summit'
+      expect(thirty_fifth_row.address[:city]).must_equal 'Uptonhaven'
+      expect(thirty_fifth_row.address[:state]).must_equal 'DE'
+      expect(thirty_fifth_row.address[:zip]).must_equal '64529-2614'
     end
   end
 
@@ -91,3 +96,28 @@ xdescribe "Customer Wave 2" do
     end
   end
 end
+
+
+# Added (optional for wave 3)
+describe "Customer Wave 3 (optional)" do 
+  describe "Customer.save" do 
+    it "Can save new customer information in the CSV" do 
+      # Arrange 
+      address = {
+        :street => "1299 Westlake Ave",
+        :city => "Seattle",
+        :state => "WA",
+        :zip => "98111"
+      }
+
+      new_customer = Customer.new(9898, "hannah@ada.org", address)
+      
+      # Act & Assert
+      Customer.save('data/customers.csv', new_customer)
+
+      expect(
+        CSV.read('data/customers.csv').last
+      ).must_equal ["9898", "hannah@ada.org", *address.values]
+    end 
+  end 
+end 
